@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+p {
+    margin: 0;
+}
+.messengerWrapper {
+    width: 80%;
+    margin: 100px auto 0;
+    display: flex;
+    border: 1px solid grey;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 400px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.screenWrapper {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.screen {
+    height: 90%;
+    border-bottom: 1px solid grey;
+    padding: 10px;
+    overflow-y: scroll;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.inputWrapper {
+    height: 10%;
+    display: flex;
 }
 
-.App-link {
-  color: #61dafb;
+input {
+    width: 80%;
+    border: 0;
+    padding: 0 15px;
+    outline: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+    width: 80px;
+    border: none;
+}
+
+.chatRoom-wrap {
+    width: 40%;
+    border-right: 1px solid grey;
+    overflow-y: scroll;
+}
+
+.chatRoom {
+    border-bottom: 1px solid grey;
+    padding: 10px 15px;
+}
+
+.msg {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    color: white;
+}
+
+.msg.dark {
+    background-color: dimgray;
 }
