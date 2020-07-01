@@ -5,7 +5,9 @@ class Message extends React.Component {
     render() {
         const {msg} = this.props;
         return (
-                <div className="msg dark">{msg.text}</div>
+                <div>
+                    <div className="msg dark">{msg.text}</div>
+                </div>
         );
     }
 

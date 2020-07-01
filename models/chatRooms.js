@@ -10,6 +10,9 @@ module.exports = function (sequelize) {
         name: {
             type: Sequelize.CHAR,
             allowNull: false
+        },
+        ownerId: {
+            type: Sequelize.INTEGER
         }
     }, {
         // timestamps: true,
@@ -18,11 +21,8 @@ module.exports = function (sequelize) {
     });
 
     ChatRoom.associate = (models) => {
-
         ChatRoom.belongsToMany(models.Users, {through: 'users_rooms'});
-        ChatRoom.belongsToMany(models.Messages, {through: 'users_rooms_messages'});
     };
-
 
     return ChatRoom;
 };

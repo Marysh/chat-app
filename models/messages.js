@@ -9,6 +9,11 @@ module.exports = function (sequelize) {
         },
         userId: {
             type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        chatRoomId: {
+            type: Sequelize.INTEGER,
+            allowNull: false
         },
         text: {
             type: Sequelize.CHAR,
@@ -20,7 +25,7 @@ module.exports = function (sequelize) {
     });
 
     Messages.associate = (models) => {
-        Messages.belongsToMany(models.ChatRoom, {through: 'users_rooms_messages'});
+        Messages.belongsTo(models.Users, {foreignKey: 'userId'});
     };
 
 

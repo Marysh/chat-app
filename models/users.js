@@ -18,6 +18,8 @@ module.exports = function (sequelize) {
 
     Users.associate = models => {
         Users.belongsToMany(models.ChatRoom, {through: 'users_rooms'});
+        Users.hasMany(models.Messages, { foreignKey: 'userId' });
+
     };
 
     return Users;

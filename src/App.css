@@ -1,6 +1,7 @@
 p {
     margin: 0;
 }
+
 .messengerWrapper {
     width: 80%;
     margin: 100px auto 0;
@@ -11,7 +12,7 @@ p {
     height: 400px;
 }
 
-.screenWrapper {
+.rightBar-wrap {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -21,7 +22,7 @@ p {
     height: 90%;
     border-bottom: 1px solid grey;
     padding: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .inputWrapper {
@@ -37,14 +38,16 @@ input {
 }
 
 button {
-    width: 80px;
     border: none;
 }
 
-.chatRoom-wrap {
+button:hover {
+    cursor: pointer
+}
+
+.leftBar-wrap {
     width: 40%;
     border-right: 1px solid grey;
-    overflow-y: scroll;
 }
 
 .chatRoom {
@@ -62,4 +65,82 @@ button {
 
 .msg.dark {
     background-color: dimgray;
+}
+
+.my-modal {
+    background: #fff;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 300px;
+    height: 200px;
+    box-shadow: 0 5px 10px 2px rgba(195, 192, 192, .5);
+    padding: 30px 20px;
+}
+
+.modal-close {
+    position: absolute;
+    right: 6px;
+    top: 9px;
+    cursor: pointer;
+    border: none;
+    font-size: 20px;
+}
+
+.modal-toggle-button {
+    cursor: pointer;
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.modal-toggle-button:focus {
+    outline: none;
+}
+
+.user-wrap {
+    border: 1px solid black;
+    padding: 5px 10px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 7px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+/*::-webkit-scrollbar-thumb:window-inactive {*/
+/*    background: white;*/
+/*}*/
+
+
+.topBar {
+    border-bottom: 1px solid grey;
+    padding: 10px 15px;
+    min-height: 23px;
+    font-weight: bold;
+}
+
+.topBar.left {
+    text-align: right;
+}
+
+.topBar.right {
+    text-align: left;
 }

@@ -3,15 +3,19 @@ module.exports.syncDb = () => {
     let seeders = [{
         model: 'Users',
         data: [
-            {name: 'Peter'},
-            {name: 'Andrew'},
+            {id: 1, name: 'Peter'},
+            {id: 2, name: 'Andrew'},
+            {id: 3, name: 'Kate'},
+            {id: 4, name: 'Ras'},
         ]
-    }, {
-        model: 'ChatRoom',
-        data: [
-            {name: 'Main'},
-        ]
-    }];
+    },
+    //     {
+    //     model: 'ChatRoom',
+    //     data: [
+    //         {id: 1, name: 'Main'},
+    //     ]
+    // }
+    ];
 
     db.sequelize.sync({alter: true})
         .then((res) => {
