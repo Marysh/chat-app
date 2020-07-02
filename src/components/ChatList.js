@@ -1,29 +1,21 @@
 import React from "react";
 import ChatRoom from "./ChatRoom";
 import {connect} from "react-redux";
-import {fillChatList} from "../store/actionTypes";
+import {selectChat} from "../store/actionTypes";
 
 class ChatList extends React.Component {
 
-    constructor(props) {
-        super(props);
-        fetch('http://localhost:3000/api/chat/getRooms')
-            .then(result => result.json())
-            .then(result => {
-                this.props.fillChatList(result);
-            });
-    }
-
-
     render() {
+        const {selectedChat} = this.props.chatState;
         return (
             <div style={{
                 "height": "90%",
                 "overflowY": "auto"
             }}>
-                {this.props.chatState.chatsList.map(room => (
-                    <ChatRoom room={room} key={room.id}/>
-                ))}
+                {this.props.chatState.chatsList.map(room => {
+                    const active = selectedChat && selectedChat.id === room.id;
+                    return (<ChatRoom room={room} key={room.id} active={active}/>)
+                })}
             </div>
         );
     }
@@ -40,8 +32,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fillChatList: (chats) => {
-            dispatch(fillChatList(chats))
+        selectChat: (chats) => {
+            dispatch(selectChat(chats))
         }
     }
 }

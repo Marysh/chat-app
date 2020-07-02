@@ -14,16 +14,19 @@ class Screen extends React.Component {
     }
 
     render() {
-        const {messagesState, chatState} = this.props;
-
+        const {selectedChat} = this.props.chatState;
+        let position;
         return (
             <div className="screen">
-                {
-                    // chatState.selectedChat.
+                {selectedChat &&
+                <div>
+                    {
+                        selectedChat.Messages && selectedChat.Messages.map(msg => (
+                            < Message position={position} msg={msg} key={msg.id}/>))
+                    }
+                </div>
+                // < Message position={position} msg={msg} key={msg.id}/>))
                 }
-                {messagesState.map(msg => (
-                    <Message msg={msg} key={msg.id}/>
-                ))}
             </div>
         )
     }
@@ -31,7 +34,6 @@ class Screen extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        messagesState: state.messagesState,
         chatState: state.chatState
     }
 }

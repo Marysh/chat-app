@@ -7,7 +7,12 @@ class ScreenTitle extends React.Component {
         const {chatState} = this.props;
         return (
             <div className="topBar right">
-                {chatState.selectedChat ? chatState.selectedChat.name : 'here will be chat name'}
+                {chatState.selectedChat ? chatState.selectedChat.name : <div className="lds-ellipsis">
+                    <div/>
+                    <div/>
+                    <div/>
+                    <div/>
+                </div>}
             </div>
         );
     }

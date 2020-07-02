@@ -6,7 +6,7 @@ module.exports.addMessage = async (req, res) => {
         return res.status(422).json({errors: "Missing fields"});
     }
 
-    db['Messages'].create({text: req.body.msg, userId: req.body.userId, chatRoomId: req.body.chatRoomId})
+    db['Messages'].create({text: req.body.msg, userId: req.body.userId, chatId: req.body.chatId})
         .then(data => {
             res.status(200).send(data);
         })

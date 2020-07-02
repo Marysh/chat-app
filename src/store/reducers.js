@@ -36,6 +36,7 @@ export function messagesReducer(state, action) {
             return action.messages;
 
         case messageActionTypes.ADD_MESSAGE:
+            debugger
             return [...state, action.newMessage];
 
         default:

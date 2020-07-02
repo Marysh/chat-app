@@ -18,19 +18,21 @@ class SendMessage extends React.Component {
 
 
     handleSend(msg) {
+        const chatListId = this.props.chatState.selectedChat.id;
         if (msg) {
             fetch('http://localhost:3000/api/messages/add', {
                 method: 'POST',
-                body: JSON.stringify({msg, userId: 1, chatRoomId: 1}),
+                body: JSON.stringify({msg, userId: 2, chatId: chatListId}),
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 }
             })
-                .then((response) => response.json())
-                .then(response => {
-                    console.log(response);
-                    this.props.addMessage(response);
+                .then((newMsg) => {
+                    return newMsg.json()
+                })
+                .then(newMsg => {
+                    this.props.addMessage(newMsg);
                 });
         }
 
@@ -64,5 +66,11 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(SendMessage);
+function mapStateToProps(state) {
+    return {
+        chatState: state.chatState
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SendMessage);
 

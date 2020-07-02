@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "./Modal";
 import User from "./Users";
 import {connect} from "react-redux";
-import {createChat} from "../store/actionTypes";
+import {createChat, selectChat} from "../store/actionTypes";
 
 class AddChat extends React.Component {
     constructor(props) {
@@ -42,9 +42,10 @@ class AddChat extends React.Component {
                 'Content-Type': 'application/json'
             }
         })
-            .then((response) => response.json())
-            .then(response => {
-                this.props.createChat(response);
+            .then((newChat) => newChat.json())
+            .then(newChat => {
+                this.props.createChat(newChat);
+                this.props.selectChat(newChat);
             });
 
         document.getElementById("chatInputName").value = "";
@@ -65,7 +66,7 @@ class AddChat extends React.Component {
 
 
     render() {
-        const {users, modalIsOpen} = this.state;
+        const {users, modalIsOpen, selectedUserId} = this.state;
         return (
             <div>
                 <div className="topBar left">
@@ -89,8 +90,11 @@ class AddChat extends React.Component {
                                 this.changeNameValue(e);
                             }}/>
                             {
-                                users.map(user => (
-                                    <User key={user.id} user={user} selectNewUser={this.selectNewUser}/>))
+                                users.map(user => {
+                                    const active = selectedUserId && selectedUserId === user.id;
+                                    return (<User key={user.id} user={user} selectNewUser={this.selectNewUser}
+                                                  active={active}/>)
+                                })
                             }
                         </div>
                         <button onClick={() => {
@@ -104,11 +108,15 @@ class AddChat extends React.Component {
     }
 
 }
+// todo: remove chatName and create btn
 
 function mapDispatchToProps(dispatch) {
     return {
         createChat: (newChat) => {
             dispatch(createChat(newChat))
+        },
+        selectChat: (newChat) => {
+            dispatch(selectChat(newChat))
         }
     }
 }

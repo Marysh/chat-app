@@ -22,6 +22,7 @@ module.exports = function (sequelize) {
 
     ChatRoom.associate = (models) => {
         ChatRoom.belongsToMany(models.Users, {through: 'users_rooms'});
+        ChatRoom.hasMany(models.Messages, {foreignKey: 'chatId'});
     };
 
     return ChatRoom;

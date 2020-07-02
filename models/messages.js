@@ -11,14 +11,10 @@ module.exports = function (sequelize) {
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        chatRoomId: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
         text: {
             type: Sequelize.CHAR,
             allowNull: false
-        }
+        },
     }, {
         tableName: 'messages',
 
@@ -26,6 +22,7 @@ module.exports = function (sequelize) {
 
     Messages.associate = (models) => {
         Messages.belongsTo(models.Users, {foreignKey: 'userId'});
+        Messages.belongsTo(models.ChatRoom, {foreignKey: 'chatId'});
     };
 
 

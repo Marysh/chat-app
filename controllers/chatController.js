@@ -76,8 +76,8 @@ module.exports.getInfo = async (req, res) => {
     db['ChatRoom'].findOne({
         where: {id: parseInt(req.params.id)},
         include: [{
-            model: db['Users'],
-            include: [{model: db['Messages']}]
+            model: db['Messages'],
+            include: [{model: db['Users']}]
         }]
     })
         .then(result => {
@@ -89,10 +89,5 @@ module.exports.getInfo = async (req, res) => {
         })
 };
 
-// where: {
-//     id: {
-//         [Op.in]: [req.body.ownerId, req.body.newUserId]
-//     }
-// }
 
 
