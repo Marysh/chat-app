@@ -4,23 +4,15 @@ class User extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            bgColor: null
-        }
-    }
 
-    changeBg() {
-        if (!this.state.bgColor) {
-            this.setState({bgColor: "#ccc"})
-        }
     }
 
     render() {
-        const {user, selectNewUser, active} = this.props;
+        const {user, selectNewUser} = this.props;
         return (
             <div className="user-wrap" onClick={() => {
-                selectNewUser(user.id);
-            }} style={{backgroundColor: active ? "#ccc" : 'transparent'}}>
+                selectNewUser(user);
+            }}>
                 <div style={{"fontWeight": "700"}}>{user.name}</div>
             </div>
         );

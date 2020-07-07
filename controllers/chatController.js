@@ -46,26 +46,53 @@ module.exports.removeChat = async (req, res) => {
 
 
 module.exports.getUsersForNewChat = async (req, res) => {
-    // todo
-    // getChatRooms where you are owner and include users_rooms
-    // filter rows with your id
-    // map the result to get array of users id's of the rest rows
-
-    db['Users'].findAll(
-        //     where: {
-        //     userId: {
-        //         [Op.notIn]: resultIds
-        //     }
-        // }
-
-    ).then(data => {
-        return res.status(200).json(data);
-    });
+    return db['Users'].findOne(
+        {
+            where: {
+                id: {
+                    [Op.eq]: req.params.id
+                }
+            },
+            // attributes: ['ChatRoomId'],
+            include: [{
+                model: db['ChatRoom'],
+                include: [{
+                    model: db['Users'],
+                    where: {
+                        id: {
+                            [Op.ne]: 1
+                        }
+                    },
+                }]
+            }]
+        }
+    )
+        .then(user => {
+            const users = [];
+            for (let i = 0; i < user.ChatRooms.length; i++) {
+                const room = user.ChatRooms[i];
+                for (let j = 0; j < room.Users.length; j++) {
+                    users.push(room.Users[j]);
+                }
+            }
+            return res.status(200).json(users);
+        })
+        .catch(e => {
+            console.log(e);
+        });
 };
 
 module.exports.getChatRooms = async (req, res) => {
 
-    db['ChatRoom'].findAll().then(data => {
+    db['ChatRoom'].findAll({
+        include: [
+            {
+                model: db['Messages'],
+                limit: 1,
+                order: [['createdAt', 'DESC']]
+            }
+        ]
+    }).then(data => {
         return res.status(200).json(data);
     });
 

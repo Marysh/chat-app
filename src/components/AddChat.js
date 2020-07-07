@@ -10,17 +10,14 @@ class AddChat extends React.Component {
         this.state = {
             users: [],
             modalIsOpen: false,
-            newChatName: null,
-            selectedUserId: null
         }
     }
 
-    getUsers() {
-        fetch('http://localhost:3000/api/chat/getUsers')
+    getUsersForNewChat() {
+        fetch(`http://localhost:3000/api/chat/getUsers/${1}`)
             .then(result => result.json())
-            .then(result => {
-                let restUsers = result.filter(user => user.id !== 1);
-                this.setState({users: restUsers});
+            .then(users => {
+                this.setState({users: users});
             });
     }
 
@@ -33,10 +30,10 @@ class AddChat extends React.Component {
         this.setState({modalIsOpen: false});
     }
 
-    createNewChat() {
+    createNewChat(user) {
         fetch('http://localhost:3000/api/chat/start', {
             method: 'POST',
-            body: JSON.stringify({ownerId: 1, name: this.state.newChatName, newUserId: this.state.selectedUserId}),
+            body: JSON.stringify({ownerId: 1, name: user.name, newUserId: user.id}),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -48,31 +45,24 @@ class AddChat extends React.Component {
                 this.props.selectChat(newChat);
             });
 
-        document.getElementById("chatInputName").value = "";
-
         this.closeModal();
 
     }
 
 
-    changeNameValue = (e) => {
-        this.setState({newChatName: e.target.value})
+    selectNewUser = (user) => {
+        this.setState({selectedUser: user});
+        this.createNewChat(user);
     };
-
-
-    selectNewUser = (userId) => {
-        this.setState({selectedUserId: userId});
-    };
-
 
     render() {
-        const {users, modalIsOpen, selectedUserId} = this.state;
+        const {users, modalIsOpen} = this.state;
         return (
             <div>
                 <div className="topBar left">
                     <button onClick={() => {
                         this.openModal();
-                        this.getUsers()
+                        this.getUsersForNewChat()
                     }}>&#10010;</button>
                 </div>
                 {modalIsOpen && (
@@ -85,22 +75,12 @@ class AddChat extends React.Component {
                         >X
                         </button>
                         <div style={{"margin": "20px"}}>
-                            <input type="text" id="chatInputName" style={{"border": "1px solid black"}}
-                                   placeholder="enter a chat name" onChange={(e) => {
-                                this.changeNameValue(e);
-                            }}/>
                             {
                                 users.map(user => {
-                                    const active = selectedUserId && selectedUserId === user.id;
-                                    return (<User key={user.id} user={user} selectNewUser={this.selectNewUser}
-                                                  active={active}/>)
+                                    return (<User key={user.id} user={user} selectNewUser={this.selectNewUser}/>)
                                 })
                             }
                         </div>
-                        <button onClick={() => {
-                            this.createNewChat()
-                        }}>Create
-                        </button>
                     </Modal>
                 )}
             </div>
@@ -108,7 +88,7 @@ class AddChat extends React.Component {
     }
 
 }
-// todo: remove chatName and create btn
+
 
 function mapDispatchToProps(dispatch) {
     return {
