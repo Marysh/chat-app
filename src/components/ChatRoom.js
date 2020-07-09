@@ -23,7 +23,7 @@ class ChatRoom extends React.Component {
     }
 
     render() {
-        const {room, active, chatState} = this.props;
+        const {room, active} = this.props;
         const chatRoom = {
             borderBottom: "1px solid grey",
             padding: "10px 15px",
@@ -43,12 +43,15 @@ class ChatRoom extends React.Component {
                         this.handleChatDelete(room.id);
                     }}/>
                 </div>
-                {chatState.selectedChat && chatState.selectedChat.id === room.id && chatState.selectedChat.Messages && chatState.selectedChat.Messages.length >= 1 && (
-                    <div>{chatState.selectedChat.Messages[chatState.selectedChat.Messages.length - 1].text}</div>
-                )}
-               {/* todo: get chat with last message on backend*/}
-
-
+                {/*{room.Messages && room.Messages.length > 0 && (*/}
+                {/*    <div>{room.Messages[0].text}</div>*/}
+                {/*)}*/}
+                {
+                    // this.props.chatState.messages && (
+                    //     <div>{this.props.chatState.messages[this.props.chatState.messages.length - 1].text}</div>
+                    // )
+                    // todo: change last message
+                }
             </div>
         );
     }

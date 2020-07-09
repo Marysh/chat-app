@@ -18,9 +18,4 @@ module.exports.addMessage = async (req, res) => {
         });
 };
 
-module.exports.getMessages = async (req, res) => {
-    db['Messages'].findAll().then(data => {
-        return res.status(200).json(data);
-    });
-};
 

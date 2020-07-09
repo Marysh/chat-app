@@ -1,5 +1,4 @@
 import {chatActionTypes} from "./actionTypes";
-import {messageActionTypes} from "./actionTypes";
 
 export function chatReducer(state, action) {
     switch (action.type) {
@@ -17,12 +16,20 @@ export function chatReducer(state, action) {
         chatActionTypes.DELETE_CHAT:
             let refreshedChats = state.chatsList.filter(chat => chat.id !== action.chat.id);
             return Object.assign({}, state, {
-                chatsList: refreshedChats
+                chatsList: refreshedChats,
+                selectedChat: null,
+
             });
         case
         chatActionTypes.SELECT_CHAT:
             return Object.assign({}, state, {
-                selectedChat: action.selectedChat
+                selectedChat: action.selectedChat,
+                messages: action.selectedChat.Messages
+            });
+        case
+        chatActionTypes.ADD_MSG_TO_SELECT_CHAT:
+            return Object.assign({}, state, {
+                messages: state.messages ? [...state.messages, action.newMessage] : [action.newMessage]
             });
 
         default:
@@ -30,16 +37,4 @@ export function chatReducer(state, action) {
     }
 }
 
-export function messagesReducer(state, action) {
-    switch (action.type) {
-        case messageActionTypes.GET_MESSAGES:
-            return action.messages;
-
-        case messageActionTypes.ADD_MESSAGE:
-            return [...state, action.newMessage];
-
-        default:
-            return state
-    }
-}
 

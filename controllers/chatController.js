@@ -23,7 +23,6 @@ module.exports.startChat = async (req, res) => {
             return newChat.addUsers(users);
         })
         .then(data => {
-
             res.status(200).send(newChat)
         })
         .catch(err => {
@@ -37,30 +36,56 @@ module.exports.startChat = async (req, res) => {
 
 module.exports.removeChat = async (req, res) => {
     if (req.params.id) {
-        db['ChatRoom'].findByPk(parseInt(req.params.id, 10)).then(chatRoom => chatRoom.destroy())
-            .then(data => {
-                res.status(200).send(data);
-            })
+        let chatRoomId = parseInt(req.params.id, 10);
+        let chatRoom;
+        db['ChatRoom'].findByPk(chatRoomId, {
+            include: [{
+                model: db['Messages']
+            }]
+        }).then(c => {
+            chatRoom = c;
+            return db['Messages'].destroy({where: {id: chatRoom.Messages.map(m => m.id)}})
+        }).then(result => {
+            return chatRoom.destroy();
+        }).then(data => {
+            res.status(200).send(data);
+        })
     }
 };
 
 
 module.exports.getUsersForNewChat = async (req, res) => {
+    const ownerId = parseInt(req.params.id, 10);
+
+    function findUsers(users) {
+        const queryObject = {where: {}};
+        if (users.length !== 0) {
+            queryObject.where.id = {
+                [Op.notIn]: [...users, ownerId]
+            };
+        } else {
+            queryObject.where.id = {
+                [Op.ne]: ownerId
+            };
+        }
+
+        return db['Users'].findAll(queryObject);
+    }
+
     return db['Users'].findOne(
         {
             where: {
                 id: {
-                    [Op.eq]: req.params.id
+                    [Op.eq]: ownerId
                 }
             },
-            // attributes: ['ChatRoomId'],
             include: [{
                 model: db['ChatRoom'],
                 include: [{
                     model: db['Users'],
                     where: {
                         id: {
-                            [Op.ne]: 1
+                            [Op.ne]: ownerId
                         }
                     },
                 }]
@@ -68,14 +93,23 @@ module.exports.getUsersForNewChat = async (req, res) => {
         }
     )
         .then(user => {
-            const users = [];
-            for (let i = 0; i < user.ChatRooms.length; i++) {
-                const room = user.ChatRooms[i];
-                for (let j = 0; j < room.Users.length; j++) {
-                    users.push(room.Users[j]);
+                const users = [];
+
+                if (user) {
+                    for (let i = 0; i < user.ChatRooms.length; i++) {
+                        const room = user.ChatRooms[i];
+                        for (let j = 0; j < room.Users.length; j++) {
+                            users.push(room.Users[j].id);
+                        }
+                    }
                 }
+
+                return users;
             }
-            return res.status(200).json(users);
+        )
+        .then(users => findUsers(users))
+        .then(usersForNewChat => {
+            return res.status(200).json(usersForNewChat);
         })
         .catch(e => {
             console.log(e);
@@ -94,7 +128,10 @@ module.exports.getChatRooms = async (req, res) => {
         ]
     }).then(data => {
         return res.status(200).json(data);
-    });
+    })
+        .catch(err => {
+            console.log(err);
+        });
 
 };
 

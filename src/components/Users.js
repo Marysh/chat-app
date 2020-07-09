@@ -2,10 +2,6 @@ import React from "react";
 
 class User extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-    }
 
     render() {
         const {user, selectNewUser} = this.props;

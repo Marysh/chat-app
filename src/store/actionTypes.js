@@ -4,11 +4,7 @@ export const chatActionTypes = {
     DELETE_CHAT: 'DELETE_CHAT',
     SELECT_CHAT: 'SELECT_CHAT',
     SELECT_USER: 'SELECT_USER',
-};
-
-export const messageActionTypes = {
-    GET_MESSAGES: 'GET_MESSAGES',
-    ADD_MESSAGE: 'ADD_MESSAGE'
+    ADD_MSG_TO_SELECT_CHAT: 'ADD_MSG_TO_SELECT_CHAT',
 };
 
 export function createChat(newChat) {
@@ -27,12 +23,6 @@ export function fillChatList(chats) {
     return {type: chatActionTypes.FILL_CHATLIST, chats}
 }
 
-export function getMessages(messages) {
-    return {type: messageActionTypes.GET_MESSAGES, messages}
-}
-
 export function addMessage(newMessage) {
-    return {type: messageActionTypes.ADD_MESSAGE, newMessage}
+    return {type: chatActionTypes.ADD_MSG_TO_SELECT_CHAT, newMessage}
 }
-
-
