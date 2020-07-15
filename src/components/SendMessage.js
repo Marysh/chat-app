@@ -1,5 +1,5 @@
 import React from "react";
-import {addMessage} from "../store/actionTypes";
+import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 
 class SendMessage extends React.Component {
@@ -7,13 +7,16 @@ class SendMessage extends React.Component {
         super(props);
         this.state = {
             value: null
-        }
+        };
+        this.inputRef = React.createRef();
     }
 
     changeValue(e) {
-        this.setState({
-            value: e.target.value
-        })
+        if (e.target.value !== ' ') {
+            this.setState({
+                value: e.target.value
+            })
+        }
     }
 
 
@@ -33,11 +36,20 @@ class SendMessage extends React.Component {
                 })
                 .then(newMsg => {
                     this.props.addMessage(newMsg);
+                    this.props.updateLastMessage(newMsg);
                 });
         }
 
-        document.getElementById("chatInput").value = "";
+        this.inputRef.current.value = "";
+        this.setState({
+            value: "",
+        });
+    }
 
+    handleKeyPress(e) {
+        if (e.key === "Enter") {
+            this.handleSend(this.state.value);
+        }
     }
 
 
@@ -45,10 +57,14 @@ class SendMessage extends React.Component {
         const {value} = this.state;
         return (
             <div className="inputWrapper">
-                <input type="text" id='chatInput' placeholder="Broadcast a message..." onChange={(e) => {
-                    this.changeValue(e);
-                }}/>
-                <button onClick={(e) => {
+                <input ref={this.inputRef} type="text" id='chatInput' placeholder="Broadcast a message..."
+                       onChange={(e) => {
+                           this.changeValue(e);
+                       }} onKeyPress={(e) => {
+                    this.handleKeyPress(e)
+                }
+                }/>
+                <button disabled={!this.state.value} onClick={(e) => {
                     this.handleSend(value)
                 }}>Send
                 </button>
@@ -62,6 +78,9 @@ function mapDispatchToProps(dispatch) {
     return {
         addMessage: (newMessage) => {
             dispatch(addMessage(newMessage))
+        },
+        updateLastMessage: (message) => {
+            dispatch(updateLastMessage(message))
         }
     }
 }

@@ -20,6 +20,7 @@ class ChatRoom extends React.Component {
             .then(res => {
                 this.props.selectChat(res);
             });
+
     }
 
     render() {
@@ -30,8 +31,6 @@ class ChatRoom extends React.Component {
             minHeight: "45px",
             backgroundColor: active ? "#ccc" : 'transparent'
         };
-
-
         return (
             <div style={chatRoom} onClick={() => {
                 this.handleChatSelect(room);
@@ -43,15 +42,7 @@ class ChatRoom extends React.Component {
                         this.handleChatDelete(room.id);
                     }}/>
                 </div>
-                {/*{room.Messages && room.Messages.length > 0 && (*/}
-                {/*    <div>{room.Messages[0].text}</div>*/}
-                {/*)}*/}
-                {
-                    // this.props.chatState.messages && (
-                    //     <div>{this.props.chatState.messages[this.props.chatState.messages.length - 1].text}</div>
-                    // )
-                    // todo: change last message
-                }
+                {room.Messages && room.Messages.length !== 0 && room.Messages[0].text}
             </div>
         );
     }
