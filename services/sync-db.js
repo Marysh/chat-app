@@ -8,14 +8,7 @@ module.exports.syncDb = () => {
             {id: 3, name: 'Kate'},
             {id: 4, name: 'Ras'},
         ]
-    },
-    //     {
-    //     model: 'ChatRoom',
-    //     data: [
-    //         {id: 1, name: 'Main'},
-    //     ]
-    // }
-    ];
+    }];
 
     db.sequelize.sync({alter: true})
         .then((res) => {

@@ -1,30 +1,27 @@
 import React from "react";
-import {addMessage} from "../store/actionTypes";
+import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 
 class SendMessage extends React.Component {
-    // todo change React.Component to React.PureComponent
-
     constructor(props) {
         super(props);
         this.state = {
             value: null
-        }
+        };
+        this.inputRef = React.createRef();
     }
 
     changeValue(e) {
-        this.setState({
-            value: e.target.value
-        })
+        if (e.target.value !== ' ') {
+            this.setState({
+                value: e.target.value
+            })
+        }
     }
 
 
     handleSend(msg) {
-
-        //todo try use destructurization everywhere;
         const chatListId = this.props.chatState.selectedChat.id;
-        // todo create service for request to server;
-
         if (msg) {
             fetch('http://localhost:3000/api/messages/add', {
                 method: 'POST',
@@ -39,12 +36,20 @@ class SendMessage extends React.Component {
                 })
                 .then(newMsg => {
                     this.props.addMessage(newMsg);
+                    this.props.updateLastMessage(newMsg);
                 });
         }
 
-        document.getElementById("chatInput").value = "";
-        // todo use React.createRef() instead document.getElementById("chatInput");
+        this.inputRef.current.value = "";
+        this.setState({
+            value: "",
+        });
+    }
 
+    handleKeyPress(e) {
+        if (e.key === "Enter") {
+            this.handleSend(this.state.value);
+        }
     }
 
 
@@ -52,14 +57,15 @@ class SendMessage extends React.Component {
         const {value} = this.state;
         return (
             <div className="inputWrapper">
-                <input type="text" id='chatInput' placeholder="Broadcast a message..." onChange={(e) => {
-                    this.changeValue(e);
-                    // todo you can pass reference this.changeValue to method onChange;
-                }}/>
-                <button onClick={() => {
-                    // todo you can not be passing value as argument to this.handleSend;
-                    // todo pass reference on the function,don't calling her in callback;
-                    this.handleSend(value);
+                <input ref={this.inputRef} type="text" id='chatInput' placeholder="Broadcast a message..."
+                       onChange={(e) => {
+                           this.changeValue(e);
+                       }} onKeyPress={(e) => {
+                    this.handleKeyPress(e)
+                }
+                }/>
+                <button disabled={!this.state.value} onClick={(e) => {
+                    this.handleSend(value)
                 }}>Send
                 </button>
             </div>
@@ -72,6 +78,9 @@ function mapDispatchToProps(dispatch) {
     return {
         addMessage: (newMessage) => {
             dispatch(addMessage(newMessage))
+        },
+        updateLastMessage: (message) => {
+            dispatch(updateLastMessage(message))
         }
     }
 }

@@ -5,7 +5,6 @@ import {deleteChat, selectChat} from "../store/actionTypes";
 class ChatRoom extends React.Component {
 
     handleChatDelete(id) {
-        // todo create service for request to server;
         fetch(`http://localhost:3000/api/chat/remove/${id}`, {
             method: 'DELETE',
         })
@@ -16,12 +15,12 @@ class ChatRoom extends React.Component {
     };
 
     handleChatSelect(chat) {
-        // todo create service for request to server;
         fetch(`http://localhost:3000/api/chat/getInfo/${chat.id}`)
             .then((res) => res.json())
             .then(res => {
                 this.props.selectChat(res);
             });
+
     }
 
     render() {
@@ -32,35 +31,18 @@ class ChatRoom extends React.Component {
             minHeight: "45px",
             backgroundColor: active ? "#ccc" : 'transparent'
         };
-        //todo try use cssClass for styling
-
-
         return (
             <div style={chatRoom} onClick={() => {
                 this.handleChatSelect(room);
-                // todo you can not being passing room as argument to this.handleChatSelect;
-                // todo pass reference on the function,don't calling her in callback;
-
             }}>
                 <div style={chatRoomName}>
                     <div style={{"fontWeight": "700"}}>{room.name}</div>
                     <button className="fa fa-trash" style={{"background": "none"}} onClick={(e) => {
                         e.stopPropagation();
-                        //todo why are you trigger e.stopPropagation();
-                        // todo you can not being passing room.id as argument to this.handleChatDelete;
-                        // todo pass reference on the function,don't calling her in callback;
                         this.handleChatDelete(room.id);
                     }}/>
                 </div>
-                {/*{room.Messages && room.Messages.length > 0 && (*/}
-                {/*    <div>{room.Messages[0].text}</div>*/}
-                {/*)}*/}
-                {
-                    // this.props.chatState.messages && (
-                    //     <div>{this.props.chatState.messages[this.props.chatState.messages.length - 1].text}</div>
-                    // )
-                    // todo: change last message
-                }
+                {room.Messages && room.Messages.length !== 0 && room.Messages[0].text}
             </div>
         );
     }
@@ -90,6 +72,6 @@ const chatRoomName = {
     justifyContent: "space-between",
     alignItems: "center"
 };
-//todo try use cssClass for styling
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom);

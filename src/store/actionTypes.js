@@ -5,6 +5,7 @@ export const chatActionTypes = {
     SELECT_CHAT: 'SELECT_CHAT',
     SELECT_USER: 'SELECT_USER',
     ADD_MSG_TO_SELECT_CHAT: 'ADD_MSG_TO_SELECT_CHAT',
+    UPDATE_LAST_MSG: 'UPDATE_LAST_MSG'
 };
 
 export function createChat(newChat) {
@@ -25,4 +26,8 @@ export function fillChatList(chats) {
 
 export function addMessage(newMessage) {
     return {type: chatActionTypes.ADD_MSG_TO_SELECT_CHAT, newMessage}
+}
+
+export function updateLastMessage(message) {
+    return {type: chatActionTypes.UPDATE_LAST_MSG, message}
 }

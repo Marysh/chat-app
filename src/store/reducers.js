@@ -9,7 +9,7 @@ export function chatReducer(state, action) {
 
         case chatActionTypes.CREATE_CHAT:
             return Object.assign({}, state, {
-                chatsList: [...state.chatsList, action.newChat]
+                chatsList: [...state.chatsList, action.newChat],
             });
 
         case
@@ -18,19 +18,25 @@ export function chatReducer(state, action) {
             return Object.assign({}, state, {
                 chatsList: refreshedChats,
                 selectedChat: null,
-
             });
         case
         chatActionTypes.SELECT_CHAT:
             return Object.assign({}, state, {
                 selectedChat: action.selectedChat,
-                messages: action.selectedChat.Messages
+                messages: action.selectedChat.Messages,
             });
         case
         chatActionTypes.ADD_MSG_TO_SELECT_CHAT:
             return Object.assign({}, state, {
-                messages: state.messages ? [...state.messages, action.newMessage] : [action.newMessage]
+                messages: state.messages ? [...state.messages, action.newMessage] : [action.newMessage],
             });
+        case
+        chatActionTypes.UPDATE_LAST_MSG:
+            let activeChat = state.chatsList.find(chat => chat.id === state.selectedChat.id);
+            if (activeChat) {
+                activeChat.Messages[0].text = action.message.text;
+            }
+            return {...state};
 
         default:
             return state

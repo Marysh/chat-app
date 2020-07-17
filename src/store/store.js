@@ -5,7 +5,7 @@ export const initialState = {
     chatState: {
         chatsList: [],
         selectedChat: null,
-        messages: null
+        messages: null,
     }
 
 };
