@@ -15,11 +15,11 @@ class ChatRoom extends React.Component {
     };
 
     handleChatSelect(chat) {
-        fetch(`http://localhost:3000/api/chat/getInfo/${chat.id}`)
-            .then((res) => res.json())
-            .then(res => {
-                this.props.selectChat(res);
-            });
+        // fetch(`http://localhost:3000/api/chat/getInfo/${chat.id}`)
+        //     .then((res) => res.json())
+        //     .then(res => {
+        this.props.selectChat(chat);
+        // });
 
     }
 
@@ -29,20 +29,25 @@ class ChatRoom extends React.Component {
             borderBottom: "1px solid grey",
             padding: "10px 15px",
             minHeight: "45px",
-            backgroundColor: active ? "#ccc" : 'transparent'
+            backgroundColor: active ? "#fff" : 'transparent',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
         };
         return (
             <div style={chatRoom} onClick={() => {
                 this.handleChatSelect(room);
             }}>
                 <div style={chatRoomName}>
-                    <div style={{"fontWeight": "700"}}>{room.name}</div>
+                    <div style={{"fontWeight": "700"}}>{room.Users[0].name}</div>
+                    {/*<div style={{"fontWeight": "700"}}>{room.id}</div>*/}
                     <button className="fa fa-trash" style={{"background": "none"}} onClick={(e) => {
                         e.stopPropagation();
                         this.handleChatDelete(room.id);
                     }}/>
                 </div>
-                {room.Messages && room.Messages.length !== 0 && room.Messages[0].text}
+                {/*{room.Messages && room.Messages.length !== 0 && room.Messages[0].text}*/}
+                {room.Messages && room.Messages.length !== 0 && room.Messages[room.Messages.length - 1].text}
             </div>
         );
     }

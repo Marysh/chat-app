@@ -33,9 +33,13 @@ export function chatReducer(state, action) {
         case
         chatActionTypes.UPDATE_LAST_MSG:
             let activeChat = state.chatsList.find(chat => chat.id === state.selectedChat.id);
-            if (activeChat) {
-                activeChat.Messages[0].text = action.message.text;
+            if (activeChat.Messages) {
+                activeChat.Messages.push(action.message); //todo check
             }
+            return {...state};
+        case
+        chatActionTypes.SELECT_USER:
+            state.selectedUser = action.userId;
             return {...state};
 
         default:

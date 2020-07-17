@@ -8,7 +8,7 @@ module.exports.startChat = async (req, res) => {
     }
 
     let newChat;
-    db['ChatRoom'].create({ownerId: req.body.ownerId, name: req.body.name})
+    db['ChatRoom'].create({ownerId: req.body.ownerId})
         .then(data => {
             newChat = data;
             return db['Users'].findAll({
@@ -54,7 +54,15 @@ module.exports.removeChat = async (req, res) => {
 };
 
 
+module.exports.getAllUsers = async (req, res) => {
+    db['Users'].findAll().then(users => {
+        return res.status(200).send(users);
+    });
+};
+
+
 module.exports.getUsersForNewChat = async (req, res) => {
+
     const ownerId = parseInt(req.params.id, 10);
 
     function findUsers(users) {
@@ -116,24 +124,43 @@ module.exports.getUsersForNewChat = async (req, res) => {
         });
 };
 
-module.exports.getChatRooms = async (req, res) => {
 
-    db['ChatRoom'].findAll({
-        include: [
-            {
-                model: db['Messages'],
-                limit: 1,
-                order: [['createdAt', 'DESC']]
+module.exports.getChatRooms = async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+
+    db['Users'].findOne({
+        where: {
+            id: {
+                [Op.eq]: [userId]
             }
-        ]
-    }).then(data => {
-        return res.status(200).json(data);
+        },
+        include: [{
+            model: db['ChatRoom'],
+            include: [
+                {
+                    model: db['Messages']
+                },
+                {
+                    model: db['Users'],
+                    attributes: ['id', 'name'],
+                    where: {
+                        id: {
+                            [Op.ne]: [userId]
+                        }
+                    },
+                }
+            ],
+        }]
     })
+        .then(data => {
+            return res.status(200).json(data.ChatRooms);
+        })
         .catch(err => {
             console.log(err);
         });
 
 };
+
 
 module.exports.getInfo = async (req, res) => {
 
@@ -141,11 +168,13 @@ module.exports.getInfo = async (req, res) => {
         where: {id: parseInt(req.params.id)},
         include: [{
             model: db['Messages'],
-            include: [{model: db['Users']}]
+            include: [{
+                model: db['Users'],
+            }]
         }]
     })
         .then(result => {
-            return res.status(200).json(result)
+                return res.status(200).json(result)
             }
         )
         .catch(err => {

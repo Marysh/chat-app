@@ -7,10 +7,6 @@ module.exports = function (sequelize) {
             primaryKey: true,
             autoIncrement: true
         },
-        name: {
-            type: Sequelize.CHAR,
-            allowNull: false
-        },
         ownerId: {
             type: Sequelize.INTEGER
         }

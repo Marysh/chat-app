@@ -31,3 +31,7 @@ export function addMessage(newMessage) {
 export function updateLastMessage(message) {
     return {type: chatActionTypes.UPDATE_LAST_MSG, message}
 }
+
+export function selectUser(userId) {
+    return {type: chatActionTypes.SELECT_USER, userId}
+}

@@ -13,8 +13,8 @@ class AddChat extends React.Component {
         }
     }
 
-    getUsersForNewChat() {
-        fetch(`http://localhost:3000/api/chat/getUsers/${1}`)
+    getUsersForNewChat(id) {
+        fetch(`http://localhost:3000/api/chat/getUsers/${id}`)
             .then(result => result.json())
             .then(users => {
                 this.setState({users: users});
@@ -33,7 +33,7 @@ class AddChat extends React.Component {
     createNewChat(user) {
         fetch('http://localhost:3000/api/chat/start', {
             method: 'POST',
-            body: JSON.stringify({ownerId: 1, name: user.name, newUserId: user.id}),
+            body: JSON.stringify({ownerId: this.props.owner, newUserId: user.id}),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -41,12 +41,16 @@ class AddChat extends React.Component {
         })
             .then((newChat) => newChat.json())
             .then(newChat => {
+                debugger
                 this.props.createChat(newChat);
                 this.props.selectChat(newChat);
+                return fetch(`http://localhost:3000/api/chat/getInfo/${newChat.id}`);
+            }).then((res) => res.json())
+            .then(res => {
+                console.log(res);
             });
 
         this.closeModal();
-
     }
 
 
@@ -57,12 +61,13 @@ class AddChat extends React.Component {
 
     render() {
         const {users, modalIsOpen} = this.state;
+        const {owner} = this.props;
         return (
             <div>
                 <div className="topBar left">
                     <button onClick={() => {
                         this.openModal();
-                        this.getUsersForNewChat()
+                        this.getUsersForNewChat(owner);
                     }}>&#10010;</button>
                 </div>
                 {modalIsOpen && (

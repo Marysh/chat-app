@@ -9,41 +9,55 @@ import {connect} from "react-redux";
 
 
 class Messenger extends React.Component {
-
     constructor(props) {
         super(props);
-        fetch('http://localhost:3000/api/chat/getRooms')
+        this.getUserRooms(this.props.user);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.user !== this.props.user) {
+            this.getUserRooms(this.props.user);
+        }
+    }
+
+    getUserRooms(userId) {
+        fetch(`http://localhost:3000/api/chat/getRooms/${userId}`)
             .then(chatRooms => chatRooms.json())
             .then(chatRooms => {
                 this.props.fillChatList(chatRooms);
-                if (chatRooms.length > 0) {
-                    return fetch(`http://localhost:3000/api/chat/getInfo/${chatRooms[0].id}`)
-                }
+                this.props.selectChat(chatRooms[0]);
+
+                // if (chatRooms.length > 0) {
+                //     return fetch(`http://localhost:3000/api/chat/getInfo/${chatRooms[0].id}`)
+                // }
             })
-            .then(chatInfo => {
-                if (chatInfo) {
-                    return chatInfo.json();
-                }
-            })
-            .then(chatInfo => {
-                if (chatInfo) {
-                    this.props.selectChat(chatInfo)
-                }
-            })
+        // .then(chatInfo => {
+        //     if (chatInfo) {
+        //         return chatInfo.json();
+        //     }
+        // })
+        // .then(chatInfo => {
+        //         if (chatInfo)
+        //             this.props.selectChat(chatInfo)
+        //     }
+        // )
     }
 
     render() {
+        const {user, chatState} = this.props;
         return (
             <div className="messengerWrapper">
                 <div className="leftBar-wrap">
-                    <AddChat/>
+                    <AddChat owner={user}/>
                     <ChatList/>
                 </div>
 
                 <div className="rightBar-wrap">
                     <ScreenTitle/>
                     <Screen/>
-                    <SendMessage/>
+                    {
+                        chatState.selectedChat && <SendMessage/>
+                    }
                 </div>
             </div>
         );
@@ -56,12 +70,18 @@ function mapDispatchToProps(dispatch) {
         fillChatList: (chats) => {
             dispatch(fillChatList(chats))
         },
-        selectChat: (chats) => {
-            dispatch(selectChat(chats))
+        selectChat: (chat) => {
+            dispatch(selectChat(chat))
         },
     }
 }
 
-export default connect(null, mapDispatchToProps)(Messenger);
+function mapStateToProps(state) {
+    return {
+        chatState: state.chatState
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Messenger);
 
 

@@ -35,15 +35,5 @@ function mapStateToProps(state) {
     }
 }
 
-
-function mapDispatchToProps(dispatch) {
-    return {
-        // getMessages: (messages) => {
-        //     dispatch(getMessages(messages))
-        // }
-    }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Screen);
+export default connect(mapStateToProps, null)(Screen);
 
