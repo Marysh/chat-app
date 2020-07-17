@@ -3,6 +3,7 @@ import Message from "./Message";
 import {connect} from "react-redux";
 
 class Screen extends React.Component {
+    // todo change React.Component to React.PureComponent
 
     constructor(props) {
         super(props);
@@ -14,6 +15,7 @@ class Screen extends React.Component {
     render() {
         const {selectedChat, messages} = this.props.chatState;
         let position;
+        // todo let position,is this variable always undefined?
         return (
             <div className="screen">
                 {selectedChat &&
@@ -35,7 +37,7 @@ function mapStateToProps(state) {
     }
 }
 
-
+//todo remove fn if you don't use
 function mapDispatchToProps(dispatch) {
     return {
         // getMessages: (messages) => {

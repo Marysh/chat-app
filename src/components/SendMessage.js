@@ -3,6 +3,8 @@ import {addMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 
 class SendMessage extends React.Component {
+    // todo change React.Component to React.PureComponent
+
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +20,11 @@ class SendMessage extends React.Component {
 
 
     handleSend(msg) {
+
+        //todo try use destructurization everywhere;
         const chatListId = this.props.chatState.selectedChat.id;
+        // todo create service for request to server;
+
         if (msg) {
             fetch('http://localhost:3000/api/messages/add', {
                 method: 'POST',
@@ -37,6 +43,7 @@ class SendMessage extends React.Component {
         }
 
         document.getElementById("chatInput").value = "";
+        // todo use React.createRef() instead document.getElementById("chatInput");
 
     }
 
@@ -47,9 +54,12 @@ class SendMessage extends React.Component {
             <div className="inputWrapper">
                 <input type="text" id='chatInput' placeholder="Broadcast a message..." onChange={(e) => {
                     this.changeValue(e);
+                    // todo you can pass reference this.changeValue to method onChange;
                 }}/>
-                <button onClick={(e) => {
-                    this.handleSend(value)
+                <button onClick={() => {
+                    // todo you can not be passing value as argument to this.handleSend;
+                    // todo pass reference on the function,don't calling her in callback;
+                    this.handleSend(value);
                 }}>Send
                 </button>
             </div>

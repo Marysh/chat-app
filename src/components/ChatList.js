@@ -9,6 +9,7 @@ class ChatList extends React.Component {
     render() {
         const {selectedChat} = this.props.chatState;
         return (
+                // todo try use cssClass instead straight styling;
             <div style={{
                 "height": "90%",
                 "overflowY": "auto"

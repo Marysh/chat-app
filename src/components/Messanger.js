@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 
 
 class Messenger extends React.Component {
-
+    // todo use React.PureComponent instead React.Component
     constructor(props) {
         super(props);
         fetch('http://localhost:3000/api/chat/getRooms')

@@ -6,8 +6,8 @@ import {createChat, selectChat} from "../store/actionTypes";
 
 class AddChat extends React.Component {
     // todo change React.Component to React.PureComponent
-    
-    
+
+
     constructor(props) {
         super(props);
         this.state = {
@@ -71,7 +71,8 @@ class AddChat extends React.Component {
                 <div className="topBar left">
                     <button onClick={() => {
                         this.openModal();
-                        this.getUsersForNewChat()
+                        this.getUsersForNewChat();
+                        // todo pass reference on the function,don't call her in callback;
                     }}>&#10010;</button>
                 </div>
                 {modalIsOpen && (
@@ -79,10 +80,12 @@ class AddChat extends React.Component {
                         <button
                             className="modal-close"
                             onClick={() => {
+                                // todo pass reference on the function,don't call her in callback;
                                 this.closeModal()
                             }}
                         >X
                         </button>
+
                         <div style={{"margin": "20px"}}>
                             {
                                 users.map(user => {
