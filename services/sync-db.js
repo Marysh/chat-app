@@ -26,5 +26,5 @@ module.exports.syncDb = () => {
                 });
             });
             return res;
-        })
+        });
 };

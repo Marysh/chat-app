@@ -5,6 +5,9 @@ import {connect} from "react-redux";
 import {createChat, selectChat} from "../store/actionTypes";
 
 class AddChat extends React.Component {
+    // todo change React.Component to React.PureComponent
+    
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -19,6 +22,9 @@ class AddChat extends React.Component {
             .then(users => {
                 this.setState({users: users});
             });
+        // todo create service for request to server;
+
+
     }
 
     openModal() {
@@ -46,6 +52,9 @@ class AddChat extends React.Component {
             });
 
         this.closeModal();
+
+        // todo create service for request to server;
+
 
     }
 

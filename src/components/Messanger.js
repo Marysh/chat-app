@@ -30,6 +30,7 @@ class Messenger extends React.Component {
                     this.props.selectChat(chatInfo)
                 }
             })
+        // todo create service for request to server;
     }
 
     render() {
