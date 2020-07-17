@@ -10,6 +10,7 @@ class Message extends React.Component {
             justifyContent: position,
             marginBottom: "5px"
         };
+        //todo try use cssClass for style
 
         return (
             // userId === urlUserId => justify-content:flex-end

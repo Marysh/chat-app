@@ -3,6 +3,8 @@ import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 
 class SendMessage extends React.Component {
+    // todo change React.Component to React.PureComponent
+
     constructor(props) {
         super(props);
         this.state = {
@@ -59,12 +61,16 @@ class SendMessage extends React.Component {
             <div className="inputWrapper">
                 <input ref={this.inputRef} type="text" id='chatInput' placeholder="Broadcast a message..."
                        onChange={(e) => {
+                           // todo pass reference on the function,don't call her in callback;
                            this.changeValue(e);
                        }} onKeyPress={(e) => {
+                    // todo pass reference on the function,don't call her in callback;
                     this.handleKeyPress(e)
                 }
                 }/>
                 <button disabled={!this.state.value} onClick={(e) => {
+                    // todo pass reference on the function,don't call her in callback;
+                    // todo you can don't pass values as argument to this.handleSend;
                     this.handleSend(value)
                 }}>Send
                 </button>

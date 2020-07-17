@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     let page = req.query.id;
+    // todo is you don't use page then remove
     res.sendFile(__dirname + "/public/index.html");
 });
 
