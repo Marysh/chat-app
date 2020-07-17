@@ -24,6 +24,9 @@ class SendMessage extends React.Component {
 
     handleSend(msg) {
         const chatListId = this.props.chatState.selectedChat.id;
+
+        // todo prevent send empty message with a lot of space
+
         if (msg) {
             fetch('http://localhost:3000/api/messages/add', {
                 method: 'POST',
@@ -49,6 +52,7 @@ class SendMessage extends React.Component {
     }
 
     handleKeyPress(e) {
+        // todo try use keyCode or which
         if (e.key === "Enter") {
             this.handleSend(this.state.value);
         }
