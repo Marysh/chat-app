@@ -3,6 +3,7 @@ import Message from "./Message";
 import {connect} from "react-redux";
 
 class Screen extends React.Component {
+    // todo change React.Component to React.PureComponent
 
     constructor(props) {
         super(props);

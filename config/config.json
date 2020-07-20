@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "root",
+    "username": "chat_user",
     "password":"rootroot20",
     "database": "chat",
     "host": "127.0.0.1",
@@ -8,7 +8,7 @@
     "operatorsAliases": false
   },
   "test": {
-    "username": "root",
+    "username": "chat_user",
     "password": "rootroot20",
     "database": "chat",
     "host": "127.0.0.1",
@@ -16,7 +16,7 @@
     "operatorsAliases": false
   },
   "production": {
-    "username": "root",
+    "username": "chat_user",
     "password": "rootroot20",
     "database": "chat",
     "host": "127.0.0.1",

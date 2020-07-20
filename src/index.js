@@ -9,6 +9,7 @@ import thunk from "redux-thunk";
 import {reducers} from './store/store';
 import {BrowserRouter} from 'react-router-dom';
 
+//todo will you use router in application
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
