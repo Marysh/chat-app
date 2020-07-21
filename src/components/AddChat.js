@@ -71,6 +71,8 @@ class AddChat extends React.Component {
                         this.openModal();
                         this.getUsersForNewChat(owner);
                         this.getUsersForNewChat();
+                        // todo you may not passing owner as argument to this.getUsersForNewChat;
+                        // todo if you call two or more function, create wrapper for them and pass him reference
                     }}>&#10010;</button>
                 </div>
                 {modalIsOpen && (
@@ -79,6 +81,7 @@ class AddChat extends React.Component {
                             className="modal-close"
                             onClick={() => {
                                 this.closeModal()
+                                // todo pass reference on the function,don't calling her in callback;
                             }}
                         >X
                         </button>

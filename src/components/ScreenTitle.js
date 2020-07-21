@@ -2,6 +2,8 @@ import React from "react";
 import {connect} from "react-redux";
 
 class ScreenTitle extends React.Component {
+    // todo if you have simple component like this use Functional Component
+
     render() {
         const {chatState} = this.props;
         return (

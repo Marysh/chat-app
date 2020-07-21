@@ -74,7 +74,7 @@ class SendMessage extends React.Component {
                 }/>
                 <button disabled={!this.state.value} onClick={(e) => {
                     // todo pass reference on the function,don't call her in callback;
-                    // todo you can don't pass values as argument to this.handleSend;
+                    // todo you may not passing values as argument to this.handleSend;
                     this.handleSend(value)
                 }}>Send
                 </button>
