@@ -5,6 +5,7 @@ import {deleteChat, selectChat} from "../store/actionTypes";
 class ChatRoom extends React.Component {
 
     handleChatDelete(id) {
+        // todo create service for request to server;
         fetch(`http://localhost:3000/api/chat/remove/${id}`, {
             method: 'DELETE',
         })
@@ -34,20 +35,28 @@ class ChatRoom extends React.Component {
             flexDirection: 'column',
             justifyContent: 'center',
         };
+        //todo try use cssClass for styling
+
+
         return (
             <div style={chatRoom} onClick={() => {
                 this.handleChatSelect(room);
+                // todo you may not passing room as argument to this.handleChatSelect;
+                // todo pass reference on the function,don't calling her in callback;
+
             }}>
                 <div style={chatRoomName}>
                     <div style={{"fontWeight": "700"}}>{room.Users[0].name}</div>
                     {/*<div style={{"fontWeight": "700"}}>{room.id}</div>*/}
                     <button className="fa fa-trash" style={{"background": "none"}} onClick={(e) => {
                         e.stopPropagation();
+                        //todo why are you trigger e.stopPropagation();
+                        // todo you may not passing room.id as argument to this.handleChatDelete;
+                        // todo pass reference on the function,don't calling her in callback;
                         this.handleChatDelete(room.id);
                     }}/>
                 </div>
-                {/*{room.Messages && room.Messages.length !== 0 && room.Messages[0].text}*/}
-                {room.Messages && room.Messages.length !== 0 && room.Messages[room.Messages.length - 1].text}
+                {room.Messages && room.Messages.length !== 0 && room.Messages[0].text}
             </div>
         );
     }

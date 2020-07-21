@@ -3,12 +3,14 @@ const {Op} = require("sequelize");
 
 
 module.exports.startChat = async (req, res) => {
+    // todo why are you use async if you don't use await?
+
     if (req.body === '') {
         return res.status(422).json({errors: "Missing fields"});
     }
 
     let newChat;
-    db['ChatRoom'].create({ownerId: req.body.ownerId})
+    db['ChatRoom'].create({ownerId: req.body.ownerId, name: req.body.name})
         .then(data => {
             newChat = data;
             return db['Users'].findAll({
@@ -62,6 +64,8 @@ module.exports.getAllUsers = async (req, res) => {
 
 
 module.exports.getUsersForNewChat = async (req, res) => {
+
+    // todo why are you use async if you don't use await?
 
     const ownerId = parseInt(req.params.id, 10);
 
@@ -127,6 +131,7 @@ module.exports.getUsersForNewChat = async (req, res) => {
 
 module.exports.getChatRooms = async (req, res) => {
     const userId = parseInt(req.params.id, 10);
+    // todo why are you use async if you don't use await?
 
     db['Users'].findOne({
         where: {
@@ -163,6 +168,7 @@ module.exports.getChatRooms = async (req, res) => {
 
 
 module.exports.getInfo = async (req, res) => {
+    // todo why are you use async if you don't use await?
 
     db['ChatRoom'].findOne({
         where: {id: parseInt(req.params.id)},

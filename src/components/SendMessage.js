@@ -3,6 +3,8 @@ import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 
 class SendMessage extends React.Component {
+    // todo change React.Component to React.PureComponent
+
     constructor(props) {
         super(props);
         this.state = {
@@ -22,6 +24,9 @@ class SendMessage extends React.Component {
 
     handleSend(msg) {
         const chatListId = this.props.chatState.selectedChat.id;
+
+        // todo prevent send empty message with a lot of space
+
         if (msg) {
             fetch('http://localhost:3000/api/messages/add', {
                 method: 'POST',
@@ -47,6 +52,7 @@ class SendMessage extends React.Component {
     }
 
     handleKeyPress(e) {
+        // todo try use keyCode or which
         if (e.key === "Enter") {
             this.handleSend(this.state.value);
         }
@@ -59,12 +65,16 @@ class SendMessage extends React.Component {
             <div className="inputWrapper">
                 <input ref={this.inputRef} type="text" id='chatInput' placeholder="Broadcast a message..."
                        onChange={(e) => {
+                           // todo pass reference on the function,don't call her in callback;
                            this.changeValue(e);
                        }} onKeyPress={(e) => {
+                    // todo pass reference on the function,don't call her in callback;
                     this.handleKeyPress(e)
                 }
                 }/>
                 <button disabled={!this.state.value} onClick={(e) => {
+                    // todo pass reference on the function,don't call her in callback;
+                    // todo you can don't pass values as argument to this.handleSend;
                     this.handleSend(value)
                 }}>Send
                 </button>
