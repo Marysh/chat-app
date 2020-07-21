@@ -18,10 +18,10 @@ class ChatRoom extends React.Component {
         // fetch(`http://localhost:3000/api/chat/getInfo/${chat.id}`)
         //     .then((res) => res.json())
         //     .then(res => {
-        this.props.selectChat(chat);
         // });
+        this.props.selectChat(chat);
 
-    }
+    };
 
     render() {
         const {room, active} = this.props;

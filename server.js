@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    let page = req.query.id;
     res.sendFile(__dirname + "/public/index.html");
 });
 

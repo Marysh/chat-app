@@ -1,71 +1,44 @@
 import React from "react";
 import Modal from "./Modal";
-import User from "./Users";
+import User from "./User";
 import {connect} from "react-redux";
 import {createChat, selectChat} from "../store/actionTypes";
+import Api from '../services/chatService'
 
-class AddChat extends React.Component {
-    // todo change React.Component to React.PureComponent
-
+class AddChat extends React.PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
             users: [],
             modalIsOpen: false,
-        }
-    }
-
-    getUsersForNewChat(id) {
-        fetch(`http://localhost:3000/api/chat/getUsers/${id}`)
-            .then(result => result.json())
-            .then(users => {
-                this.setState({users: users});
-            });
-        // todo create service for request to server;
-
+        };
 
     }
 
-    openModal() {
+    openModal = () => {
         this.setState({modalIsOpen: true});
-    }
+    };
 
 
-    closeModal() {
+    closeModal = () => {
         this.setState({modalIsOpen: false});
-    }
+    };
 
-    createNewChat(user) {
-        fetch('http://localhost:3000/api/chat/start', {
-            method: 'POST',
-            body: JSON.stringify({ownerId: this.props.owner, newUserId: user.id}),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then((newChat) => newChat.json())
-            .then(newChat => {
-                this.props.createChat(newChat);
-                this.props.selectChat(newChat);
-                return fetch(`http://localhost:3000/api/chat/getInfo/${newChat.id}`);
-            }).then((res) => res.json())
-            .then(res => {
-                console.log(res);
-            });
+
+    selectNewUser(user, owner) {
+        this.setState({selectedUser: user});
+
+        Api.createNewChat(user, owner).then(newChat => {
+            this.props.createChat(newChat);
+            this.props.selectChat(newChat);
+            return Api.getInfo(newChat.id)
+                .then(res => {
+                    console.log(res);
+                });
+        });
 
         this.closeModal();
-
-        // todo create service for request to server;
-
-
-    }
-
-
-    selectNewUser = (user) => {
-        this.setState({selectedUser: user});
-        this.createNewChat(user);
     };
 
     render() {
@@ -76,25 +49,27 @@ class AddChat extends React.Component {
                 <div className="topBar left">
                     <button onClick={() => {
                         this.openModal();
-                        this.getUsersForNewChat(owner);
-                        this.getUsersForNewChat();
-                        // todo pass reference on the function,don't call her in callback;
+                        Api.getUsersForNewChat(owner).then(users => {
+                            this.setState({users: users});
+                        });
+
                     }}>&#10010;</button>
                 </div>
                 {modalIsOpen && (
                     <Modal>
                         <button
                             className="modal-close"
-                            onClick={() => {
-                                // todo pass reference on the function,don't call her in callback;
-                                this.closeModal()
-                            }}
+                            onClick={this.closeModal}
                         >X
                         </button>
                         <div style={{"margin": "20px"}}>
                             {
                                 users.map(user => {
-                                    return (<User key={user.id} user={user} selectNewUser={this.selectNewUser}/>)
+                                    return (<User key={user.id} user={user}
+                                                  selectNewUser={() => {
+                                                      this.selectNewUser(user, owner)
+                                                  }}
+                                    />)
                                 })
                             }
                         </div>

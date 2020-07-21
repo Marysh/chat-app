@@ -8,8 +8,7 @@ import {fillChatList, selectChat} from "../store/actionTypes";
 import {connect} from "react-redux";
 
 
-class Messenger extends React.Component {
-    // todo use React.PureComponent instead React.Component
+class Messenger extends React.PureComponent {
     constructor(props) {
         super(props);
         this.getUserRooms(this.props.user);
@@ -42,9 +41,8 @@ class Messenger extends React.Component {
         //             this.props.selectChat(chatInfo)
         //     }
         // )
-        // todo create service for request to server;
 
-    }
+    };
 
     render() {
         const {user, chatState} = this.props;

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Messenger from "./components/Messanger";
+import Messenger from "./components/Messenger";
 import UsersToSelect from "./components/UsersToSelect";
 import {connect} from "react-redux";
 

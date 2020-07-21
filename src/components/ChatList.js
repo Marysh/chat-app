@@ -4,16 +4,11 @@ import {connect} from "react-redux";
 import {selectChat} from "../store/actionTypes";
 
 class ChatList extends React.Component {
-    // todo change React.Component to React.PureComponent
 
     render() {
         const {selectedChat} = this.props.chatState;
         return (
-                // todo try use cssClass instead straight styling;
-            <div style={{
-                "height": "90%",
-                "overflowY": "auto"
-            }}>
+            <div style={chatList}>
                 {this.props.chatState.chatsList.map(room => {
                     const active = selectedChat && selectedChat.id === room.id;
                     return (<ChatRoom room={room} key={room.id} active={active}/>)
@@ -23,6 +18,11 @@ class ChatList extends React.Component {
     }
 
 }
+
+const chatList = {
+    height: "90%",
+    overflowY: "auto"
+};
 
 
 function mapStateToProps(state) {

@@ -1,6 +1,7 @@
 import React from "react";
 import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
+import Api from "../services/chatService";
 
 class SendMessage extends React.Component {
     constructor(props) {
@@ -11,29 +12,19 @@ class SendMessage extends React.Component {
         this.inputRef = React.createRef();
     }
 
-    changeValue(e) {
+    changeValue = (e) => {
         if (e.target.value !== ' ') {
             this.setState({
                 value: e.target.value
             })
         }
-    }
+    };
 
 
-    handleSend(msg) {
+    handleSend = (msg) => {
         const chatListId = this.props.chatState.selectedChat.id;
         if (msg) {
-            fetch('http://localhost:3000/api/messages/add', {
-                method: 'POST',
-                body: JSON.stringify({msg, userId: 2, chatId: chatListId}),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then((newMsg) => {
-                    return newMsg.json()
-                })
+            Api.addMessage(msg, chatListId)
                 .then(newMsg => {
                     this.props.addMessage(newMsg);
                     this.props.updateLastMessage(newMsg);
@@ -44,13 +35,13 @@ class SendMessage extends React.Component {
         this.setState({
             value: "",
         });
-    }
+    };
 
-    handleKeyPress(e) {
+    handleKeyPress = (e) => {
         if (e.key === "Enter") {
             this.handleSend(this.state.value);
         }
-    }
+    };
 
 
     render() {
@@ -58,11 +49,8 @@ class SendMessage extends React.Component {
         return (
             <div className="inputWrapper">
                 <input ref={this.inputRef} type="text" id='chatInput' placeholder="Broadcast a message..."
-                       onChange={(e) => {
-                           this.changeValue(e);
-                       }} onKeyPress={(e) => {
-                    this.handleKeyPress(e)
-                }
+                       onChange={this.changeValue} onKeyPress={
+                    this.handleKeyPress
                 }/>
                 <button disabled={!this.state.value} onClick={(e) => {
                     this.handleSend(value)
