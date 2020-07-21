@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 
 
 class Messenger extends React.Component {
-    // todo use React.PureComponent instead React.Component
     constructor(props) {
         super(props);
         this.getUserRooms(this.props.user);
@@ -42,7 +41,6 @@ class Messenger extends React.Component {
         //             this.props.selectChat(chatInfo)
         //     }
         // )
-        // todo create service for request to server;
 
     }
 

@@ -4,12 +4,10 @@ import {connect} from "react-redux";
 import {selectChat} from "../store/actionTypes";
 
 class ChatList extends React.Component {
-    // todo change React.Component to React.PureComponent
 
     render() {
         const {selectedChat} = this.props.chatState;
         return (
-                // todo try use cssClass instead straight styling;
             <div style={{
                 "height": "90%",
                 "overflowY": "auto"

@@ -5,8 +5,6 @@ import {connect} from "react-redux";
 import {createChat, selectChat} from "../store/actionTypes";
 
 class AddChat extends React.Component {
-    // todo change React.Component to React.PureComponent
-
 
     constructor(props) {
         super(props);
@@ -22,8 +20,6 @@ class AddChat extends React.Component {
             .then(users => {
                 this.setState({users: users});
             });
-        // todo create service for request to server;
-
 
     }
 
@@ -57,9 +53,6 @@ class AddChat extends React.Component {
 
         this.closeModal();
 
-        // todo create service for request to server;
-
-
     }
 
 
@@ -78,7 +71,6 @@ class AddChat extends React.Component {
                         this.openModal();
                         this.getUsersForNewChat(owner);
                         this.getUsersForNewChat();
-                        // todo pass reference on the function,don't call her in callback;
                     }}>&#10010;</button>
                 </div>
                 {modalIsOpen && (
@@ -86,7 +78,6 @@ class AddChat extends React.Component {
                         <button
                             className="modal-close"
                             onClick={() => {
-                                // todo pass reference on the function,don't call her in callback;
                                 this.closeModal()
                             }}
                         >X
