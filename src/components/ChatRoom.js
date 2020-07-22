@@ -1,30 +1,25 @@
 import React from "react";
 import {connect} from "react-redux";
 import {deleteChat, selectChat} from "../store/actionTypes";
+import Api from "../services/chatService";
 
 class ChatRoom extends React.Component {
 
-    handleChatDelete(id) {
-        fetch(`http://localhost:3000/api/chat/remove/${id}`, {
-            method: 'DELETE',
-        })
-            .then((response) => response.json())
+    handleChatDelete() {
+        Api.removeChatRoom(this.props.room.id)
             .then(res => {
                 this.props.deleteChat(res);
             })
     };
 
     handleChatSelect(chat) {
-        // fetch(`http://localhost:3000/api/chat/getInfo/${chat.id}`)
-        //     .then((res) => res.json())
-        //     .then(res => {
-        // });
         this.props.selectChat(chat);
 
     };
 
     render() {
         const {room, active} = this.props;
+        const {chatState} = this.props;
         const chatRoom = {
             borderBottom: "1px solid grey",
             padding: "10px 15px",
@@ -39,15 +34,14 @@ class ChatRoom extends React.Component {
                 this.handleChatSelect(room);
             }}>
                 <div style={chatRoomName}>
-                    <div style={{"fontWeight": "700"}}>{room.Users[0].name}</div>
-                    {/*<div style={{"fontWeight": "700"}}>{room.id}</div>*/}
+                    <div
+                        style={{"fontWeight": "700"}}>{room.Users[0].name}</div>
                     <button className="fa fa-trash" style={{"background": "none"}} onClick={(e) => {
                         e.stopPropagation();
-                        this.handleChatDelete(room.id);
+                        this.handleChatDelete();
                     }}/>
                 </div>
-                {/*{room.Messages && room.Messages.length !== 0 && room.Messages[0].text}*/}
-                {room.Messages && room.Messages.length !== 0 && room.Messages[room.Messages.length - 1].text}
+                {room.Messages ? room.Messages.length !== 0 && room.Messages[room.Messages.length - 1].text : chatState.messages && chatState.messages[chatState.messages.length - 1].text}
             </div>
         );
     }

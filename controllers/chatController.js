@@ -167,16 +167,15 @@ module.exports.getInfo = async (req, res) => {
     db['ChatRoom'].findOne({
         where: {id: parseInt(req.params.id)},
         include: [{
-            model: db['Messages'],
+            model: db['Users'],
             include: [{
-                model: db['Users'],
+                model: db['Messages'],
             }]
         }]
     })
-        .then(result => {
-                return res.status(200).json(result)
-            }
-        )
+        .then(chat => {
+            return res.status(200).json(chat)
+        })
         .catch(err => {
             console.log(err);
         })

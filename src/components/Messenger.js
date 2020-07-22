@@ -26,10 +26,6 @@ class Messenger extends React.PureComponent {
             .then(chatRooms => {
                 this.props.fillChatList(chatRooms);
                 this.props.selectChat(chatRooms[0]);
-
-                // if (chatRooms.length > 0) {
-                //     return fetch(`http://localhost:3000/api/chat/getInfo/${chatRooms[0].id}`)
-                // }
             })
         // .then(chatInfo => {
         //     if (chatInfo) {

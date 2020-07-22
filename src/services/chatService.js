@@ -2,7 +2,7 @@ const url = 'http://localhost:3000';
 
 export default class Api {
     static getUsersForNewChat(id) {
-        return fetch(`http://localhost:3000/api/chat/getUsers/${id}`)
+        return fetch(url + `/api/chat/getUsers/${id}`)
             .then(result => result.json())
     }
 
@@ -17,17 +17,17 @@ export default class Api {
         }).then(res => res.json());
     }
 
-    static getInfo(chatId) {
-        return fetch(url + `/api/chat/getInfo/${chatId}`).then(res => res.json());
+    static getInfo(chat) {
+        return fetch(url + `/api/chat/getInfo/${chat.id}`).then(res => res.json());
     }
 
     static getUsers() {
-        return fetch(`http://localhost:3000/api/chat/getUsers`)
+        return fetch(url + `/api/chat/getUsers`)
             .then(users => users.json())
     }
 
     static addMessage(msg, chatListId) {
-        return fetch('http://localhost:3000/api/messages/add', {
+        return fetch(url + '/api/messages/add', {
             method: 'POST',
             body: JSON.stringify({msg, userId: 2, chatId: chatListId}),
             headers: {
@@ -36,6 +36,13 @@ export default class Api {
             }
         })
             .then(newMsg => newMsg.json())
+    }
+
+    static removeChatRoom(id) {
+        return fetch(`http://localhost:3000/api/chat/remove/${id}`, {
+            method: 'DELETE',
+        })
+            .then((response) => response.json())
     }
 
 }

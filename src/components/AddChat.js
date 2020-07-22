@@ -30,12 +30,10 @@ class AddChat extends React.PureComponent {
         this.setState({selectedUser: user});
 
         Api.createNewChat(user, owner).then(newChat => {
-            this.props.createChat(newChat);
-            this.props.selectChat(newChat);
-            return Api.getInfo(newChat.id)
-                .then(res => {
-                    console.log(res);
-                });
+            return Api.getInfo(newChat)
+        }).then(res => {
+            this.props.createChat(res);
+            this.props.selectChat(res);
         });
 
         this.closeModal();
