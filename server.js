@@ -32,17 +32,19 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
 
-    socket.on('message-from-client-to-server', (msg) => {
-        console.log(msg);
-        socket.emit('message-from-server-to-client', msg);
-    });
+    console.log('connected');
 
-    socket.on('create', (room) => {
-        socket.join(room);
-        io.sockets.in(room).emit('event', 'bla');
-    });
-
-
+    // socket.on('message-from-client-to-server', (msg) => {
+    //     console.log(msg);
+    //     socket.emit('message-from-server-to-client', msg);
+    // });
+    //
+    // socket.on('create', (room) => {
+    //     socket.join(room);
+    //     io.sockets.in(room).emit('event', 'bla');
+    // });
+    //
+    //
     socket.on('newMessage', (msgObj) => {
         db['Messages'].create({text: msgObj.text, userId: msgObj.userId, chatId: msgObj.chatId})
             .then(data => {

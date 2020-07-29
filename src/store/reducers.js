@@ -26,16 +26,21 @@ export function chatReducer(state, action) {
             });
         case
         chatActionTypes.ADD_MSG_TO_SELECT_CHAT:
-            return Object.assign({}, state, {
-                messages: state.messages ? [...state.messages, action.newMessage] : [action.newMessage],
-            });
+            if(state.selectedChat.Messages) {
+                state.selectedChat.Messages = [...state.selectedChat.Messages, action.newMessage]
+            } else {
+                state.selectedChat.Messages = [action.newMessage]
+            }
+            return Object.assign({}, state);
         case
         chatActionTypes.UPDATE_LAST_MSG:
+            // todo change to object assign
             let activeChat = state.chatsList.find(chat => chat.id === state.selectedChat.id);
             activeChat.Messages = [action.message];
             return {...state};
         case
         chatActionTypes.SELECT_USER:
+            // todo change to object assign
             state.selectedUser = action.user;
             return {...state};
 

@@ -1,8 +1,7 @@
 import React from "react";
 import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
-import Api from "../services/chatService";
-import {sendMessage, initConnection, receiveMessage} from "../api";
+import SocketAPI from "../api";
 
 class SendMessage extends React.Component {
     constructor(props) {
@@ -11,11 +10,6 @@ class SendMessage extends React.Component {
             value: null
         };
         this.inputRef = React.createRef();
-        initConnection();
-        receiveMessage( (newMsg) => {
-            this.props.addMessage(newMsg);
-            this.props.updateLastMessage(newMsg);
-        });
     }
 
     changeValue = (e) => {
@@ -30,12 +24,7 @@ class SendMessage extends React.Component {
     handleSend = (msg) => {
         const chatId = this.props.chatState.selectedChat.id;
         if (msg) {
-            // Api.addMessage(msg, chatId)
-            //     .then(newMsg => {
-            //         this.props.addMessage(newMsg);
-            //         this.props.updateLastMessage(newMsg);
-            //     });
-            sendMessage(msg, chatId);
+            SocketAPI.sendMessage(msg, chatId);
         }
 
         this.inputRef.current.value = "";
@@ -69,22 +58,11 @@ class SendMessage extends React.Component {
 }
 
 
-function mapDispatchToProps(dispatch) {
-    return {
-        addMessage: (newMessage) => {
-            dispatch(addMessage(newMessage))
-        },
-        updateLastMessage: (message) => {
-            dispatch(updateLastMessage(message))
-        }
-    }
-}
-
 function mapStateToProps(state) {
     return {
         chatState: state.chatState
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendMessage);
+export default connect(mapStateToProps)(SendMessage);
 

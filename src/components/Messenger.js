@@ -4,9 +4,10 @@ import ChatList from "./ChatList";
 import Screen from "./Screen";
 import ScreenTitle from "./ScreenTitle";
 import SendMessage from "./SendMessage";
-import {fillChatList, selectChat} from "../store/actionTypes";
+import {addMessage, fillChatList, selectChat, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 import Api from "../services/chatService";
+import SocketAPI from "../api";
 
 
 class Messenger extends React.PureComponent {
@@ -24,12 +25,18 @@ class Messenger extends React.PureComponent {
         const {selectedChat: previousSelectedChat} = prevProps.chatState;
 
         if (selectedChat === null && previousSelectedChat) {
-            console.log('disconnect socket', selectedChat);
+            SocketAPI.disconnect();
         } else if (selectedChat && previousSelectedChat === null) {
-            console.log('connect', selectedChat);
+            SocketAPI.initConnection(this.onMessageReceive);
         } else if(selectedChat && previousSelectedChat && selectedChat !== previousSelectedChat){
-            console.log('disconnect and connect new socket', selectedChat);
+            SocketAPI.disconnect();
+            SocketAPI.initConnection(this.onMessageReceive);
         }
+    }
+
+    onMessageReceive = (newMessage) => {
+        this.props.addMessage(newMessage);
+        this.props.updateLastMessage(newMessage);
     }
 
     getUserRooms(userId) {
@@ -84,6 +91,12 @@ function mapDispatchToProps(dispatch) {
         selectChat: (chat) => {
             dispatch(selectChat(chat))
         },
+        addMessage: (newMessage) => {
+            dispatch(addMessage(newMessage))
+        },
+        updateLastMessage: (message) => {
+            dispatch(updateLastMessage(message))
+        }
     }
 }
 
