@@ -19,7 +19,6 @@ class ChatRoom extends React.Component {
 
     render() {
         const {room, active} = this.props;
-        const {chatState} = this.props;
         const chatRoom = {
             borderBottom: "1px solid grey",
             padding: "10px 15px",
@@ -29,19 +28,25 @@ class ChatRoom extends React.Component {
             flexDirection: 'column',
             justifyContent: 'center',
         };
+
+        let lastMessage;
+        let chatName = room.Users.length > 1 ? room.Users[1].name : room.Users[0].name;
+        if (room.Messages && room.Messages.length !== 0) {
+            lastMessage = room.Messages[room.Messages.length - 1].text;
+        }
         return (
             <div style={chatRoom} onClick={() => {
                 this.handleChatSelect(room);
             }}>
                 <div style={chatRoomName}>
                     <div
-                        style={{"fontWeight": "700"}}>{room.Users[0].name}</div>
+                        style={{"fontWeight": "700"}}>{chatName}</div>
                     <button className="fa fa-trash" style={{"background": "none"}} onClick={(e) => {
                         e.stopPropagation();
                         this.handleChatDelete();
                     }}/>
                 </div>
-                {room.Messages ? room.Messages.length !== 0 && room.Messages[room.Messages.length - 1].text : chatState.messages && chatState.messages[chatState.messages.length - 1].text}
+                {lastMessage}
             </div>
         );
     }

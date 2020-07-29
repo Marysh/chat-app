@@ -21,12 +21,9 @@ export function chatReducer(state, action) {
             });
         case
         chatActionTypes.SELECT_CHAT:
-            if (action.selectedChat.Users.length > 1) {
-                action.selectedChat.Users = action.selectedChat.Users.filter(user => user.id !== action.selectedChat.ownerId);
-            }
-            state.selectedChat = action.selectedChat;
-            state.messages = action.selectedChat.Messages ? action.selectedChat.Messages : null;
-            return {...state};
+            return Object.assign({}, state, {
+                selectedChat: action.selectedChat
+            });
         case
         chatActionTypes.ADD_MSG_TO_SELECT_CHAT:
             return Object.assign({}, state, {
@@ -35,13 +32,11 @@ export function chatReducer(state, action) {
         case
         chatActionTypes.UPDATE_LAST_MSG:
             let activeChat = state.chatsList.find(chat => chat.id === state.selectedChat.id);
-            if (activeChat.Messages) {
-                activeChat.Messages.push(action.message);
-            }
+            activeChat.Messages = [action.message];
             return {...state};
         case
         chatActionTypes.SELECT_USER:
-            state.selectedUser = action.userId;
+            state.selectedUser = action.user;
             return {...state};
 
         default:

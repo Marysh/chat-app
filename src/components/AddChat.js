@@ -17,18 +17,20 @@ class AddChat extends React.PureComponent {
     }
 
     openModal = () => {
+        const {owner} = this.props;
+        Api.getUsersForNewChat(owner).then(users => {
+            this.setState({users: users});
+        });
         this.setState({modalIsOpen: true});
     };
 
 
     closeModal = () => {
-        this.setState({modalIsOpen: false});
+        this.setState({users: [], modalIsOpen: false});
     };
 
 
     selectNewUser(user, owner) {
-        this.setState({selectedUser: user});
-
         Api.createNewChat(user, owner).then(newChat => {
             return Api.getInfo(newChat)
         }).then(res => {
@@ -45,13 +47,7 @@ class AddChat extends React.PureComponent {
         return (
             <div>
                 <div className="topBar left">
-                    <button onClick={() => {
-                        this.openModal();
-                        Api.getUsersForNewChat(owner).then(users => {
-                            this.setState({users: users});
-                        });
-
-                    }}>&#10010;</button>
+                    <button onClick={this.openModal}>&#10010;</button>
                 </div>
                 {modalIsOpen && (
                     <Modal>

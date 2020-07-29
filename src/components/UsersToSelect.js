@@ -20,7 +20,8 @@ class UsersToSelect extends React.Component {
     }
 
     render() {
-        const {users, selectedUser} = this.state;
+        const {users} = this.state;
+        const {selectedUser} = this.props.chatState;
         const User = {
             borderBottom: "1px solid grey",
             backgroundColor: "#ccc",
@@ -35,12 +36,9 @@ class UsersToSelect extends React.Component {
                         borderBottom: index === users.length - 1 ? 'none' : "1px solid grey",
                         padding: "10px 15px",
                         height: "20px",
-                        backgroundColor: selectedUser === index ? "#fff" : "#ccc"
+                        backgroundColor: selectedUser && selectedUser.id === user.id ? "#fff" : "#ccc"
                     }} key={index} onClick={() => {
-                        this.props.selectUser(user.id);
-                        this.setState({
-                            selectedUser: index
-                        })
+                        this.props.selectUser(user);
                     }}>{user.name}</div>
                 ))}
             </div>

@@ -6,6 +6,7 @@ import ScreenTitle from "./ScreenTitle";
 import SendMessage from "./SendMessage";
 import {fillChatList, selectChat} from "../store/actionTypes";
 import {connect} from "react-redux";
+import Api from "../services/chatService";
 
 
 class Messenger extends React.PureComponent {
@@ -18,25 +19,38 @@ class Messenger extends React.PureComponent {
         if (prevProps.user !== this.props.user) {
             this.getUserRooms(this.props.user);
         }
+
+        const {selectedChat} = this.props.chatState;
+        const {selectedChat: previousSelectedChat} = prevProps.chatState;
+
+        if (selectedChat === null && previousSelectedChat) {
+            console.log('disconnect socket', selectedChat);
+        } else if (selectedChat && previousSelectedChat === null) {
+            console.log('connect', selectedChat);
+        } else if(selectedChat && previousSelectedChat && selectedChat !== previousSelectedChat){
+            console.log('disconnect and connect new socket', selectedChat);
+        }
     }
 
     getUserRooms(userId) {
+        //todo move to service
         fetch(`http://localhost:3000/api/chat/getRooms/${userId}`)
-            .then(chatRooms => chatRooms.json())
+            .then(chatRooms => {
+                return chatRooms.json();
+            })
             .then(chatRooms => {
                 this.props.fillChatList(chatRooms);
-                this.props.selectChat(chatRooms[0]);
+                if(chatRooms.length !== 0) {
+                    return Api.getInfo(chatRooms[0]);
+                }
+                return null;
             })
-        // .then(chatInfo => {
-        //     if (chatInfo) {
-        //         return chatInfo.json();
-        //     }
-        // })
-        // .then(chatInfo => {
-        //         if (chatInfo)
-        //             this.props.selectChat(chatInfo)
-        //     }
-        // )
+            .then(chatInfo => {
+                this.props.selectChat(chatInfo)
+            })
+            .catch(err => {
+                console.log(err);
+            })
 
     };
 

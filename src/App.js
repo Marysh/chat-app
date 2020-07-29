@@ -11,7 +11,7 @@ class App extends React.Component {
         return (
             <div style={{margin: "100px auto 0", width: "600px"}}>
                 <UsersToSelect/>
-                {chatState.selectedUser && <Messenger user={chatState.selectedUser}/>}
+                {chatState.selectedUser && <Messenger user={chatState.selectedUser.id}/>}
             </div>
         )
     };

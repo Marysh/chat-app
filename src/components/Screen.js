@@ -4,23 +4,20 @@ import {connect} from "react-redux";
 
 class Screen extends React.PureComponent {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            messages: []
-        }
+    componentDidMount() {
     }
-
     render() {
-        const {selectedChat, messages} = this.props.chatState;
-        let position;
+        const {selectedChat} = this.props.chatState;
         return (
             <div className="screen">
                 {selectedChat &&
                 <div>
                     {
-                        messages && messages.map(msg => (
-                            < Message position={position} msg={msg} key={msg.id}/>))
+                        selectedChat.Messages && selectedChat.Messages.map(msg => (
+                            // todo position should accept "left", "right". Position itself is internal implementation
+                            <Message
+                                position={msg.userId === selectedChat.ownerId ? 'flex-end' : 'flex-start'}
+                                msg={msg} key={msg.id}/>))
                     }
                 </div>
                 }

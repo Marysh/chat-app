@@ -2,6 +2,7 @@ import React from "react";
 import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 import Api from "../services/chatService";
+import {sendMessage, initConnection, receiveMessage} from "../api";
 
 class SendMessage extends React.Component {
     constructor(props) {
@@ -10,10 +11,15 @@ class SendMessage extends React.Component {
             value: null
         };
         this.inputRef = React.createRef();
+        initConnection();
+        receiveMessage( (newMsg) => {
+            this.props.addMessage(newMsg);
+            this.props.updateLastMessage(newMsg);
+        });
     }
 
     changeValue = (e) => {
-        if (e.target.value !== ' ') {
+        if (e.target.value.trim() !== '') {
             this.setState({
                 value: e.target.value
             })
@@ -22,13 +28,14 @@ class SendMessage extends React.Component {
 
 
     handleSend = (msg) => {
-        const chatListId = this.props.chatState.selectedChat.id;
+        const chatId = this.props.chatState.selectedChat.id;
         if (msg) {
-            Api.addMessage(msg, chatListId)
-                .then(newMsg => {
-                    this.props.addMessage(newMsg);
-                    this.props.updateLastMessage(newMsg);
-                });
+            // Api.addMessage(msg, chatId)
+            //     .then(newMsg => {
+            //         this.props.addMessage(newMsg);
+            //         this.props.updateLastMessage(newMsg);
+            //     });
+            sendMessage(msg, chatId);
         }
 
         this.inputRef.current.value = "";

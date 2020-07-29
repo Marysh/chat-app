@@ -2,7 +2,7 @@ const db = require('../models/index');
 const {Op} = require("sequelize");
 
 
-module.exports.startChat = async (req, res) => {
+module.exports.startChat = (req, res) => {
     if (req.body === '') {
         return res.status(422).json({errors: "Missing fields"});
     }
@@ -34,7 +34,7 @@ module.exports.startChat = async (req, res) => {
 };
 
 
-module.exports.removeChat = async (req, res) => {
+module.exports.removeChat = (req, res) => {
     if (req.params.id) {
         let chatRoomId = parseInt(req.params.id, 10);
         let chatRoom;
@@ -54,14 +54,14 @@ module.exports.removeChat = async (req, res) => {
 };
 
 
-module.exports.getAllUsers = async (req, res) => {
+module.exports.getAllUsers = (req, res) => {
     db['Users'].findAll().then(users => {
         return res.status(200).send(users);
     });
 };
 
 
-module.exports.getUsersForNewChat = async (req, res) => {
+module.exports.getUsersForNewChat = (req, res) => {
 
     const ownerId = parseInt(req.params.id, 10);
 
@@ -125,7 +125,7 @@ module.exports.getUsersForNewChat = async (req, res) => {
 };
 
 
-module.exports.getChatRooms = async (req, res) => {
+module.exports.getChatRooms = (req, res) => {
     const userId = parseInt(req.params.id, 10);
 
     db['Users'].findOne({
@@ -138,7 +138,9 @@ module.exports.getChatRooms = async (req, res) => {
             model: db['ChatRoom'],
             include: [
                 {
-                    model: db['Messages']
+                    model: db['Messages'],
+                    limit: 1,
+                    order: [['createdAt', 'DESC']]
                 },
                 {
                     model: db['Users'],
@@ -153,7 +155,7 @@ module.exports.getChatRooms = async (req, res) => {
         }]
     })
         .then(data => {
-            return res.status(200).json(data.ChatRooms);
+            return res.status(200).json(data ? data.ChatRooms : []);
         })
         .catch(err => {
             console.log(err);
@@ -162,16 +164,21 @@ module.exports.getChatRooms = async (req, res) => {
 };
 
 
-module.exports.getInfo = async (req, res) => {
+module.exports.getInfo = (req, res) => {
 
     db['ChatRoom'].findOne({
-        where: {id: parseInt(req.params.id)},
+        where: {
+            id: parseInt(req.params.id)
+        },
         include: [{
-            model: db['Users'],
+            model: db['Messages'],
             include: [{
-                model: db['Messages'],
+                model: db['Users'],
             }]
-        }]
+        },
+            {
+                model: db['Users'],
+            }],
     })
         .then(chat => {
             return res.status(200).json(chat)

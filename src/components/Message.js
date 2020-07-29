@@ -3,8 +3,7 @@ import React from "react";
 class Message extends React.Component {
 
     render() {
-        const {msg, userId, position} = this.props;
-
+        const {msg, position} = this.props;
         const messageWrap = {
             display: "flex",
             justifyContent: position,
@@ -12,7 +11,6 @@ class Message extends React.Component {
         };
 
         return (
-            // userId === urlUserId => justify-content:flex-end
             <div className="messageWrap" style={messageWrap}>
                 <div className="msg dark">{msg.text}</div>
             </div>
