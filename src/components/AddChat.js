@@ -17,8 +17,8 @@ class AddChat extends React.PureComponent {
     }
 
     openModal = () => {
-        const {owner} = this.props;
-        Api.getUsersForNewChat(owner).then(users => {
+        const {ownerId} = this.props;
+        Api.getUsersForNewChat(ownerId).then(users => {
             this.setState({users: users});
         });
         this.setState({modalIsOpen: true});
@@ -30,12 +30,10 @@ class AddChat extends React.PureComponent {
     };
 
 
-    selectNewUser(user, owner) {
-        Api.createNewChat(user, owner).then(newChat => {
-            return Api.getInfo(newChat)
-        }).then(res => {
-            this.props.createChat(res);
-            this.props.selectChat(res);
+    selectNewUser(user, ownerId) {
+        Api.createNewChat(user, ownerId).then(newChat => {
+            this.props.createChat(newChat);
+            this.props.selectChat(newChat);
         });
 
         this.closeModal();
@@ -43,11 +41,11 @@ class AddChat extends React.PureComponent {
 
     render() {
         const {users, modalIsOpen} = this.state;
-        const {owner} = this.props;
+        const {ownerId} = this.props;
         return (
             <div>
                 <div className="topBar left">
-                    <button onClick={this.openModal}>&#10010;</button>
+                    <button title='Start new chat' onClick={this.openModal}>&#10010;</button>
                 </div>
                 {modalIsOpen && (
                     <Modal>
@@ -56,12 +54,12 @@ class AddChat extends React.PureComponent {
                             onClick={this.closeModal}
                         >X
                         </button>
-                        <div style={{"margin": "20px"}}>
+                        <div style={{"margin": "20px 0"}}>
                             {
                                 users.map(user => {
                                     return (<User key={user.id} user={user}
                                                   selectNewUser={() => {
-                                                      this.selectNewUser(user, owner)
+                                                      this.selectNewUser(user, ownerId)
                                                   }}
                                     />)
                                 })

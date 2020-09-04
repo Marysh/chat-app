@@ -13,8 +13,9 @@ class ChatRoom extends React.Component {
     };
 
     handleChatSelect(chat) {
-        this.props.selectChat(chat);
-
+        Api.getInfo(chat).then(chat => {
+            this.props.selectChat(chat);
+        });
     };
 
     render() {
@@ -30,8 +31,8 @@ class ChatRoom extends React.Component {
         };
 
         let lastMessage;
-        let chatName = room.Users.length > 1 ? room.Users[1].name : room.Users[0].name;
-        if (room.Messages && room.Messages.length !== 0) {
+        let chatName = room.Users.length > 1 ? room.Users[1].name : room.Users[0].name ; // chat mate
+        if (room.Messages.length !== 0) {
             lastMessage = room.Messages[room.Messages.length - 1].text;
         }
         return (
@@ -40,13 +41,13 @@ class ChatRoom extends React.Component {
             }}>
                 <div style={chatRoomName}>
                     <div
-                        style={{"fontWeight": "700"}}>{chatName}</div>
-                    <button className="fa fa-trash" style={{"background": "none"}} onClick={(e) => {
+                        style={{fontWeight: "700"}}>{chatName}</div>
+                    <button className="fa fa-trash chatRoomBtn" onClick={(e) => {
                         e.stopPropagation();
                         this.handleChatDelete();
                     }}/>
                 </div>
-                {lastMessage}
+                <div className="preview-msg">{lastMessage}</div>
             </div>
         );
     }

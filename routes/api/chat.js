@@ -9,5 +9,7 @@ chatRouter.get('/getUsers/:id', chatController.getUsersForNewChat);
 chatRouter.get('/getUsers', chatController.getAllUsers);
 chatRouter.get('/getRooms/:id', chatController.getChatRooms);
 chatRouter.get('/getInfo/:id', chatController.getInfo);
+chatRouter.delete('/removeMsg/:id', chatController.removeMsg);
+// chatRouter.post('/editMsg/:id', chatController.editMsg);
 
 module.exports = chatRouter;

@@ -4,21 +4,14 @@ import {connect} from "react-redux";
 class ScreenTitle extends React.Component {
 
     render() {
-        const {selectedChat} = this.props.chatState;
-        let name;
-        if (selectedChat) {
-            name = selectedChat.Users.length > 1 ? selectedChat.Users[1].name : selectedChat.Users[0].name
+        const {chatState} = this.props;
+        let chatMate;
+        if (chatState.selectedChat) {
+            chatMate = chatState.selectedChat.Users.find(user => user.id !== chatState.selectedUser.id).name;
         }
         return (
             <div className="topBar right">
-                {name ||
-                <div className="lds-ellipsis">
-                    <div/>
-                    <div/>
-                    <div/>
-                    <div/>
-                </div>
-                }
+                {chatMate}
             </div>
         );
     }

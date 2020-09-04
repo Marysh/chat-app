@@ -23,7 +23,10 @@ module.exports.startChat = (req, res) => {
             return newChat.addUsers(users);
         })
         .then(data => {
-            res.status(200).send(newChat)
+            return getChatInfo(newChat.dataValues.id);
+        })
+        .then(newChat => {
+            return res.status(200).send(newChat)
         })
         .catch(err => {
             res.status(500).send({
@@ -55,7 +58,9 @@ module.exports.removeChat = (req, res) => {
 
 
 module.exports.getAllUsers = (req, res) => {
-    db['Users'].findAll().then(users => {
+    db['Users'].findAll({
+        attributes: ['id', 'name']
+    }).then(users => {
         return res.status(200).send(users);
     });
 };
@@ -65,11 +70,11 @@ module.exports.getUsersForNewChat = (req, res) => {
 
     const ownerId = parseInt(req.params.id, 10);
 
-    function findUsers(users) {
+    function findUsersForNewChat(chatMatesIds) {
         const queryObject = {where: {}};
-        if (users.length !== 0) {
+        if (chatMatesIds.length !== 0) {
             queryObject.where.id = {
-                [Op.notIn]: [...users, ownerId]
+                [Op.notIn]: [...chatMatesIds, ownerId]
             };
         } else {
             queryObject.where.id = {
@@ -77,6 +82,7 @@ module.exports.getUsersForNewChat = (req, res) => {
             };
         }
 
+        // todo security leak return only need fields
         return db['Users'].findAll(queryObject);
     }
 
@@ -91,6 +97,7 @@ module.exports.getUsersForNewChat = (req, res) => {
                 model: db['ChatRoom'],
                 include: [{
                     model: db['Users'],
+                    attributes: ['id', 'name'],
                     where: {
                         id: {
                             [Op.ne]: ownerId
@@ -101,21 +108,21 @@ module.exports.getUsersForNewChat = (req, res) => {
         }
     )
         .then(user => {
-                const users = [];
+                const chatMatesIds = [];
 
                 if (user) {
                     for (let i = 0; i < user.ChatRooms.length; i++) {
                         const room = user.ChatRooms[i];
                         for (let j = 0; j < room.Users.length; j++) {
-                            users.push(room.Users[j].id);
+                            chatMatesIds.push(room.Users[j].id);
                         }
                     }
                 }
 
-                return users;
+                return chatMatesIds;
             }
         )
-        .then(users => findUsers(users))
+        .then(chatMatesIds => findUsersForNewChat(chatMatesIds))
         .then(usersForNewChat => {
             return res.status(200).json(usersForNewChat);
         })
@@ -137,11 +144,13 @@ module.exports.getChatRooms = (req, res) => {
         include: [{
             model: db['ChatRoom'],
             include: [
+                // get last message to show on chat preview
                 {
                     model: db['Messages'],
                     limit: 1,
                     order: [['createdAt', 'DESC']]
                 },
+                // get chat mate user
                 {
                     model: db['Users'],
                     attributes: ['id', 'name'],
@@ -165,21 +174,7 @@ module.exports.getChatRooms = (req, res) => {
 
 
 module.exports.getInfo = (req, res) => {
-
-    db['ChatRoom'].findOne({
-        where: {
-            id: parseInt(req.params.id)
-        },
-        include: [{
-            model: db['Messages'],
-            include: [{
-                model: db['Users'],
-            }]
-        },
-            {
-                model: db['Users'],
-            }],
-    })
+    getChatInfo(req.params.id)
         .then(chat => {
             return res.status(200).json(chat)
         })
@@ -189,4 +184,38 @@ module.exports.getInfo = (req, res) => {
 };
 
 
+function getChatInfo(chatId) {
+    return db['ChatRoom'].findOne({
+        where: {
+            id: parseInt(chatId)
+        },
+        include: [{
+            model: db['Messages']
+        },
+            {
+                model: db['Users'],
+                attributes: ['id', 'name']
+            }]
+    })
+}
 
+
+module.exports.removeMsg = (req, res) => {
+    if (req.params.id) {
+        let msgId = parseInt(req.params.id, 10);
+        let deletedMsg;
+        db['Messages'].findByPk(msgId)
+            .then(msg => {
+                deletedMsg = msg;
+                return db['Messages'].destroy({
+                    where: {id: msgId}
+                })
+            })
+            .then(result => {
+                if (result === 1) {
+                    res.status(200).json(deletedMsg);
+                }
+            })
+    }
+
+}

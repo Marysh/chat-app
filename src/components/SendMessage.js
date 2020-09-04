@@ -1,7 +1,6 @@
 import React from "react";
-import {addMessage, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
-import SocketAPI from "../api";
+import SocketAPI from "../socketApi";
 
 class SendMessage extends React.Component {
     constructor(props) {
@@ -22,9 +21,9 @@ class SendMessage extends React.Component {
 
 
     handleSend = (msg) => {
-        const chatId = this.props.chatState.selectedChat.id;
+        const {selectedChat, selectedUser} = this.props.chatState;
         if (msg) {
-            SocketAPI.sendMessage(msg, chatId);
+            SocketAPI.sendMessage(msg, selectedChat.id, selectedUser.id, new Date());
         }
 
         this.inputRef.current.value = "";

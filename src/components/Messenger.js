@@ -7,7 +7,7 @@ import SendMessage from "./SendMessage";
 import {addMessage, fillChatList, selectChat, updateLastMessage} from "../store/actionTypes";
 import {connect} from "react-redux";
 import Api from "../services/chatService";
-import SocketAPI from "../api";
+import SocketAPI from "../socketApi";
 
 
 class Messenger extends React.PureComponent {
@@ -27,27 +27,23 @@ class Messenger extends React.PureComponent {
         if (selectedChat === null && previousSelectedChat) {
             SocketAPI.disconnect();
         } else if (selectedChat && previousSelectedChat === null) {
-            SocketAPI.initConnection(this.onMessageReceive);
-        } else if(selectedChat && previousSelectedChat && selectedChat !== previousSelectedChat){
+            SocketAPI.initConnection(selectedChat, this.onMessageReceive);
+        } else if (selectedChat && previousSelectedChat && selectedChat.id !== previousSelectedChat.id) {
             SocketAPI.disconnect();
-            SocketAPI.initConnection(this.onMessageReceive);
+            SocketAPI.initConnection(selectedChat, this.onMessageReceive);
         }
     }
 
     onMessageReceive = (newMessage) => {
         this.props.addMessage(newMessage);
         this.props.updateLastMessage(newMessage);
-    }
+    };
 
     getUserRooms(userId) {
-        //todo move to service
-        fetch(`http://localhost:3000/api/chat/getRooms/${userId}`)
-            .then(chatRooms => {
-                return chatRooms.json();
-            })
+        Api.getUserRooms(userId)
             .then(chatRooms => {
                 this.props.fillChatList(chatRooms);
-                if(chatRooms.length !== 0) {
+                if (chatRooms.length !== 0) {
                     return Api.getInfo(chatRooms[0]);
                 }
                 return null;
@@ -66,7 +62,7 @@ class Messenger extends React.PureComponent {
         return (
             <div className="messengerWrapper">
                 <div className="leftBar-wrap">
-                    <AddChat owner={user}/>
+                    <AddChat ownerId={user}/>
                     <ChatList/>
                 </div>
 

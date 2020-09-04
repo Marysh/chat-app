@@ -6,15 +6,17 @@ export default class Api {
             .then(result => result.json())
     }
 
-    static createNewChat(user, owner) {
+    static createNewChat(user, ownerId) {
         return fetch(url + '/api/chat/start', {
             method: 'POST',
-            body: JSON.stringify({ownerId: owner, newUserId: user.id}),
+            body: JSON.stringify({ownerId: ownerId, newUserId: user.id}),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json());
+        }).then(res => {
+            return res.json()
+        });
     }
 
     static getInfo(chat) {
@@ -26,20 +28,22 @@ export default class Api {
             .then(users => users.json())
     }
 
-    static addMessage(msg, chatListId) {
-        return fetch(url + '/api/messages/add', {
-            method: 'POST',
-            body: JSON.stringify({msg, userId: 2, chatId: chatListId}),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(newMsg => newMsg.json())
+    static getUserRooms(userId) {
+        return fetch(url + `/api/chat/getRooms/${userId}`)
+            .then(chatRooms => {
+                return chatRooms.json();
+            })
     }
 
     static removeChatRoom(id) {
-        return fetch(`http://localhost:3000/api/chat/remove/${id}`, {
+        return fetch(url + `/api/chat/remove/${id}`, {
+            method: 'DELETE',
+        })
+            .then((response) => response.json())
+    }
+
+    static removeMsg(id) {
+        return fetch(url + `/api/chat/removeMsg/${id}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())

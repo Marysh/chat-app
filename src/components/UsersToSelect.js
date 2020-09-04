@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {selectUser} from "../store/actionTypes";
+import {fillChatList, selectUser} from "../store/actionTypes";
 import Api from "../services/chatService";
 
 class UsersToSelect extends React.Component {
@@ -22,22 +22,13 @@ class UsersToSelect extends React.Component {
     render() {
         const {users} = this.state;
         const {selectedUser} = this.props.chatState;
-        const User = {
-            borderBottom: "1px solid grey",
-            backgroundColor: "#ccc",
-            padding: "10px 15px",
-            height: "20px",
-        };
         return (
             <div className="usersWrapper">
-                {/*todo change styles to const User*/}
                 {users && users.map((user, index) => (
-                    <div style={{
-                        borderBottom: index === users.length - 1 ? 'none' : "1px solid grey",
-                        padding: "10px 15px",
-                        height: "20px",
+                    <div className="user" style={{
                         backgroundColor: selectedUser && selectedUser.id === user.id ? "#fff" : "#ccc"
                     }} key={index} onClick={() => {
+                        // this.props.fillChatList([]); //todo think if we should clear chats
                         this.props.selectUser(user);
                     }}>{user.name}</div>
                 ))}
@@ -58,7 +49,10 @@ function mapDispatchToProps(dispatch) {
     return {
         selectUser: (user) => {
             dispatch(selectUser(user))
-        }
+        },
+        fillChatList: (chats) => {
+            dispatch(fillChatList(chats))
+        },
     }
 }
 

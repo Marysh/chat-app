@@ -1,4 +1,4 @@
-import {chatActionTypes} from "./actionTypes";
+import {chatActionTypes, messageActionTypes, selectChat} from "./actionTypes";
 
 export function chatReducer(state, action) {
     switch (action.type) {
@@ -9,7 +9,7 @@ export function chatReducer(state, action) {
 
         case chatActionTypes.CREATE_CHAT:
             return Object.assign({}, state, {
-                chatsList: [...state.chatsList, action.newChat],
+                chatsList: [...state.chatsList, action.newChat], // todo think!!!
             });
 
         case
@@ -26,7 +26,7 @@ export function chatReducer(state, action) {
             });
         case
         chatActionTypes.ADD_MSG_TO_SELECT_CHAT:
-            if(state.selectedChat.Messages) {
+            if (state.selectedChat.Messages.length > 0) {
                 state.selectedChat.Messages = [...state.selectedChat.Messages, action.newMessage]
             } else {
                 state.selectedChat.Messages = [action.newMessage]
@@ -34,19 +34,37 @@ export function chatReducer(state, action) {
             return Object.assign({}, state);
         case
         chatActionTypes.UPDATE_LAST_MSG:
-            // todo change to object assign
-            let activeChat = state.chatsList.find(chat => chat.id === state.selectedChat.id);
-            activeChat.Messages = [action.message];
-            return {...state};
+            // todo understand why chatsList[activeChat] === selectedChat
+            let activeChat = state.chatsList.findIndex(chat => chat.id === state.selectedChat.id);
+            state.chatsList[activeChat].Messages = [action.message];
+            return {...state}
         case
         chatActionTypes.SELECT_USER:
-            // todo change to object assign
             state.selectedUser = action.user;
-            return {...state};
-
+            return Object.assign({}, state, {
+                selectedUser: action.user
+            });
+        case
+        chatActionTypes.DELETE_MSG:
+            let msgAfterDelete = state.selectedChat.Messages.filter(msg => msg.id !== action.msgId);
+            state.selectedChat.Messages = msgAfterDelete;
+            return {...state}
         default:
             return state
     }
 }
+
+// export function msgReducer(state, action) {
+//     switch (action.type) {
+//         case
+//         messageActionTypes.EDIT_MSG:
+//             return {...state}
+//         case
+//         messageActionTypes.DELETE_MSG:
+//            return state.chatsList.selectedChat.Messages.filter(msg => msg.id !== action);
+//         default:
+//             return state
+//     }
+// }
 
 

@@ -32,23 +32,18 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
 
-    console.log('connected');
+    socket.on('connectToRoom', (chatId) => {
+        socket.join('ChatRoom_' + chatId);
+    });
 
-    // socket.on('message-from-client-to-server', (msg) => {
-    //     console.log(msg);
-    //     socket.emit('message-from-server-to-client', msg);
-    // });
-    //
-    // socket.on('create', (room) => {
-    //     socket.join(room);
-    //     io.sockets.in(room).emit('event', 'bla');
-    // });
-    //
-    //
+    socket.on('disconnectFromRoom', (chatId) => {
+        socket.leave('ChatRoom_' + chatId);
+    });
+
     socket.on('newMessage', (msgObj) => {
-        db['Messages'].create({text: msgObj.text, userId: msgObj.userId, chatId: msgObj.chatId})
+        db['Messages'].create({text: msgObj.text, userId: msgObj.userId, chatId: msgObj.chatId, time: msgObj.time})
             .then(data => {
-                socket.emit('incomingMessage', data);
+                io.sockets.in('ChatRoom_' + msgObj.chatId).emit('incomingMessage', data);
             })
             .catch(err => {
                 console.log(err);
@@ -57,6 +52,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('disconnect', () => {
+        // todo leave
         console.log('disconnection')
     });
 

@@ -15,6 +15,10 @@ module.exports = function (sequelize) {
             type: Sequelize.CHAR,
             allowNull: false
         },
+        time: {
+            type: Sequelize.DATE,
+            allowNull: false
+        }
     }, {
         tableName: 'messages',
 
