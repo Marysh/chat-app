@@ -1,7 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
-import {fillChatList, selectUser} from "../store/actionTypes";
-import Api from "../services/chatService";
+import {fillChatList, selectUser} from "../../store/actionTypes";
+import Api from "../../services/chatService";
+import styles from "./UsersToSelect.module.css"
 
 class UsersToSelect extends React.Component {
 
@@ -21,17 +22,20 @@ class UsersToSelect extends React.Component {
 
     render() {
         const {users} = this.state;
-        const {selectedUser} = this.props.chatState;
+        const {chatState, fillChatList, selectUser} = this.props;
         return (
-            <div className="usersWrapper">
-                {users && users.map((user, index) => (
-                    <div className="user" style={{
-                        backgroundColor: selectedUser && selectedUser.id === user.id ? "#fff" : "#ccc"
-                    }} key={index} onClick={() => {
-                        // this.props.fillChatList([]); //todo think if we should clear chats
-                        this.props.selectUser(user);
-                    }}>{user.name}</div>
-                ))}
+            <div className={styles.usersWrapper}>
+                {users && users.map((user, index) => {
+                    const bgColor = chatState.selectedUser && chatState.selectedUser.id === user.id ? "#fff" : "#ccc";
+                    return (
+                        <div className={styles.user} style={{
+                            backgroundColor: bgColor
+                        }} key={index} onClick={() => {
+                            fillChatList([]);
+                            selectUser(user);
+                        }}>{user.name}</div>
+                    )
+                })}
             </div>
         );
     }

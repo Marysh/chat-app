@@ -6,32 +6,6 @@ body {
     background-color: #cccccc;
 }
 
-.messengerWrapper {
-    display: flex;
-    border: 1px solid grey;
-    border-radius: 10px;
-    overflow: hidden;
-    height: 400px;
-}
-
-.rightBar-wrap {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-}
-
-.screen {
-    height: 90%;
-    border-bottom: 1px solid grey;
-    padding: 10px;
-    overflow-y: auto;
-}
-
-.inputWrapper {
-    height: 10%;
-    display: flex;
-}
-
 input {
     width: 80%;
     border: 0;
@@ -47,116 +21,8 @@ button:hover {
     cursor: pointer
 }
 
-.leftBar-wrap {
-    width: 40%;
-    border-right: 1px solid grey;
-}
-
-
-.msg {
-    display: flex;
-    align-items: flex-end;
-    padding: 5px 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    color: white;
-    max-width: 80%;
-    position: relative;
-}
-
-.msgTime {
-    margin-left: 10px;
-    color: #c6b9b9;
-    font-size: 14px;
-}
-
-.msg-text {
-    word-break: break-word;
-}
-
-.msg-ContextMenu {
-    position: absolute;
-    width: 100px;
-    color: #fff;
-    z-index: 10;
-    background-color: #28364c;
-    border-radius: 5px;
-    border-top-left-radius: revert;
-    padding: 10px 0;
-}
-
-.msg-ContextMenu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.msg-ContextMenu ul li {
-    padding: 5px 10px;
-}
-
-.msg-ContextMenu ul li:hover {
-    background-color: rgba(53, 71, 101, 0.8);
-}
-
-.msg-ContextMenu ul li:not(:last-child) {
-    margin-bottom: 5px;
-}
-
-.msg.dark {
-    background-color: #486590;
-}
-
-.msg.light {
-    background-color: #3a86b9;
-}
-
-.my-modal {
-    background: #fff;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    width: 300px;
-    height: 200px;
-    box-shadow: 0 5px 10px 2px rgba(195, 192, 192, .5);
-    padding: 30px 20px;
-}
-
-.modal-close {
-    position: absolute;
-    right: 6px;
-    top: 9px;
-    cursor: pointer;
-    border: none;
-    font-size: 20px;
-}
-
-.modal-toggle-button {
-    cursor: pointer;
-    background-color: cadetblue;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-.modal-toggle-button:focus {
-    outline: none;
-}
-
-.user-wrap {
-    border: 1px solid black;
-    padding: 5px 10px;
-}
-
-.user-wrap:not(:last-child) {
-    border-bottom: none;
+.bold {
+    font-weight: 700;
 }
 
 .topBar {
@@ -172,36 +38,4 @@ button:hover {
 
 .topBar.right {
     text-align: left;
-}
-
-.user-wrap:hover {
-    background-color: #cccccc;
-    cursor: pointer;
-}
-
-.usersWrapper {
-    border: 1px solid grey;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 10px;
-}
-
-.user {
-    border-bottom: 1px solid grey;
-    background-color: #ccc;
-    padding: 10px 15px;
-    height: 20px;
-}
-
-.preview-msg {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.chatRoomBtn {
-    background: none;
-    padding-right: 0;
-}
-.chatRoomBtn:focus {
-    outline: none;
 }

@@ -1,16 +1,12 @@
 import React from "react";
-import Message from "./Message";
+import Message from "../Message/Message";
 import {connect} from "react-redux";
-import ContextMenu from "./ContextMenu";
-import {deleteMsg, editMsg} from "../store/actionTypes";
-import Api from "../services/chatService";
+import ContextMenu from "../ContextMenu/ContextMenu";
+import {deleteMsg, updateLastMessage} from "../../store/actionTypes";
+import Api from "../../services/chatService";
+import styles from "./Screen.module.css"
 
 class Screen extends React.PureComponent {
-
-    // todo
-    // 2) ContextPopup should have own click listener to stopPropagation
-    // 3) ContextPopup and Screen click listeners should be destroyed on componentWillUnmount
-
     constructor(props) {
         super(props);
         this.state = {
@@ -30,9 +26,10 @@ class Screen extends React.PureComponent {
     }
 
     handleClick = () => {
-        if (this.state.menuIsShown) {
+        const {menuIsShown} = this.state;
+        if (menuIsShown) {
             this.setState({
-                menuIsShown: !this.state.menuIsShown
+                menuIsShown: !menuIsShown
             })
         }
     }
@@ -47,38 +44,37 @@ class Screen extends React.PureComponent {
     }
 
     handleMenuItemClick = (actionKey) => {
-        if (actionKey === "Edit") {
-            // this.props.editMsg();
-            console.log('edit');
-        } else if (actionKey === "Delete") {
-            Api.removeMsg(this.state.selectedMsgId)
-                .then(res => {
-                    this.props.deleteMsg(this.state.selectedMsgId);
+        const {selectedMsgId, menuIsShown} = this.state;
+        const {deleteMsg, updateLastMessage, chatState} = this.props;
+        if (actionKey === "Delete") {
+            Api.removeMsg(selectedMsgId)
+                .then(() => {
+                    deleteMsg(selectedMsgId);
+                    const lastMsg = chatState.selectedChat.Messages.length > 0 ?
+                        chatState.selectedChat.Messages[chatState.selectedChat.Messages.length - 1] : null
+                    updateLastMessage(lastMsg)
                     this.setState({
-                        menuIsShown: !this.state.menuIsShown
+                        menuIsShown: !menuIsShown
                     })
                 })
-        } else {
-
         }
     }
 
     render() {
         const {selectedChat, selectedUser} = this.props.chatState;
         const {menuIsShown, coordinates} = this.state;
-        const actions = ["Edit", "Delete", "Copy"];
+        const actions = ["Delete"];
         let position;
         return (
-            <div className="screen">
+            <div className={styles.screen}>
                 {selectedChat &&
                 <div>
                     {
                         selectedChat.Messages.map(msg => {
                             position = msg.userId === selectedUser.id ? "right" : 'left';
                             return (
-                                <>
+                                <React.Fragment key={msg.id}>
                                     <Message
-                                        key={msg.id}
                                         msg={msg}
                                         position={position}
                                         handleContext={(e) => {
@@ -89,7 +85,7 @@ class Screen extends React.PureComponent {
                                         <ContextMenu actions={actions} handleMenuClick={this.handleMenuItemClick}
                                                      coordinates={coordinates}/>
                                     }
-                                </>
+                                </React.Fragment>
                             )
                         })
                     }
@@ -108,11 +104,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        editMsg: (msgId) => {
-            dispatch(editMsg(msgId))
-        },
         deleteMsg: (msgId) => {
             dispatch(deleteMsg(msgId))
+        },
+        updateLastMessage: (msg) => {
+            dispatch(updateLastMessage(msg))
         }
     }
 }

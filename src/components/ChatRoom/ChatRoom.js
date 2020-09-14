@@ -1,10 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
-import {deleteChat, selectChat} from "../store/actionTypes";
-import Api from "../services/chatService";
+import {deleteChat, selectChat, updateLastMessage} from "../../store/actionTypes";
+import Api from "../../services/chatService";
+import styles from "./Chatroom.module.css"
 
 class ChatRoom extends React.Component {
-
     handleChatDelete() {
         Api.removeChatRoom(this.props.room.id)
             .then(res => {
@@ -20,34 +20,25 @@ class ChatRoom extends React.Component {
 
     render() {
         const {room, active} = this.props;
-        const chatRoom = {
-            borderBottom: "1px solid grey",
-            padding: "10px 15px",
-            minHeight: "45px",
-            backgroundColor: active ? "#fff" : 'transparent',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-        };
-
+        const bgColor = active ? styles.whiteBg : styles.transparent;
+        let chatName = room.Users.length > 1 ? room.Users[1].name : room.Users[0].name; // chat mate
         let lastMessage;
-        let chatName = room.Users.length > 1 ? room.Users[1].name : room.Users[0].name ; // chat mate
-        if (room.Messages.length !== 0) {
+        if (room.Messages.length > 0) {
             lastMessage = room.Messages[room.Messages.length - 1].text;
         }
         return (
-            <div style={chatRoom} onClick={() => {
+            <div className={`${styles.chatRoom} ${bgColor}`} onClick={() => {
                 this.handleChatSelect(room);
             }}>
-                <div style={chatRoomName}>
+                <div className={styles.chatRoomName}>
                     <div
-                        style={{fontWeight: "700"}}>{chatName}</div>
-                    <button className="fa fa-trash chatRoomBtn" onClick={(e) => {
+                    >{chatName}</div>
+                    <button className={`fa fa-trash ${styles.chatRoomBtn}`} onClick={(e) => {
                         e.stopPropagation();
                         this.handleChatDelete();
                     }}/>
                 </div>
-                <div className="preview-msg">{lastMessage}</div>
+                <div className={styles.preview_msg}>{lastMessage}</div>
             </div>
         );
     }
@@ -61,6 +52,9 @@ function mapDispatchToProps(dispatch) {
         },
         selectChat: (chat) => {
             dispatch(selectChat(chat))
+        },
+        updateLastMessage: (message) => {
+            dispatch(updateLastMessage(message))
         }
     }
 }
@@ -71,12 +65,6 @@ function mapStateToProps(state) {
     }
 
 }
-
-const chatRoomName = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center"
-};
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom);

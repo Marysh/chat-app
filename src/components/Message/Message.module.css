@@ -1,0 +1,41 @@
+.msg {
+    display: flex;
+    align-items: flex-end;
+    padding: 5px 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    color: white;
+    max-width: 80%;
+    position: relative;
+}
+
+.messageWrap {
+    display: flex;
+    margin-bottom: 5px
+}
+
+.msgTime {
+    margin-left: 10px;
+    color: #c6b9b9;
+    font-size: 14px;
+}
+
+.msg_text {
+    word-break: break-word;
+}
+
+.msg_dark {
+    background-color: #486590;
+}
+
+.msg_light {
+    background-color: #3a86b9;
+}
+
+.end {
+    justify-content: flex-end;
+}
+
+.start {
+    justify-content: flex-start;
+}

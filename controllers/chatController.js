@@ -82,7 +82,6 @@ module.exports.getUsersForNewChat = (req, res) => {
             };
         }
 
-        // todo security leak return only need fields
         return db['Users'].findAll(queryObject);
     }
 

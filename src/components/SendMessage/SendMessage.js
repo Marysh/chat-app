@@ -1,12 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
-import SocketAPI from "../socketApi";
+import SocketAPI from "../../socketApi";
+import styles from "./SendMessage.module.css"
 
 class SendMessage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: null
+            value: ''
         };
         this.inputRef = React.createRef();
     }
@@ -42,9 +43,9 @@ class SendMessage extends React.Component {
     render() {
         const {value} = this.state;
         return (
-            <div className="inputWrapper">
-                <input ref={this.inputRef} type="text" id='chatInput' placeholder="Broadcast a message..."
-                       onChange={this.changeValue} onKeyPress={
+            <div className={styles.inputWrapper}>
+                <input ref={this.inputRef} type="text" id='chatInput' placeholder={"Broadcast a message..."}
+                       value={value} onChange={this.changeValue} onKeyPress={
                     this.handleKeyPress
                 }/>
                 <button disabled={!this.state.value} onClick={(e) => {

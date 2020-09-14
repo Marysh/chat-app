@@ -1,9 +1,10 @@
 import React from "react";
-import Modal from "./Modal";
-import User from "./User";
+import Modal from "../Modal/Modal";
+import User from "../User/User";
 import {connect} from "react-redux";
-import {createChat, selectChat} from "../store/actionTypes";
-import Api from '../services/chatService'
+import {createChat, selectChat} from "../../store/actionTypes";
+import Api from '../../services/chatService';
+import styles from "./AddChat.module.css"
 
 class AddChat extends React.PureComponent {
 
@@ -31,9 +32,10 @@ class AddChat extends React.PureComponent {
 
 
     selectNewUser(user, ownerId) {
+        const {createChat, selectChat} = this.props;
         Api.createNewChat(user, ownerId).then(newChat => {
-            this.props.createChat(newChat);
-            this.props.selectChat(newChat);
+            createChat(newChat);
+            selectChat(newChat);
         });
 
         this.closeModal();
@@ -50,7 +52,7 @@ class AddChat extends React.PureComponent {
                 {modalIsOpen && (
                     <Modal>
                         <button
-                            className="modal-close"
+                            className={styles.modal_close}
                             onClick={this.closeModal}
                         >X
                         </button>

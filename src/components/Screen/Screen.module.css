@@ -1,0 +1,6 @@
+.screen {
+    height: 90%;
+    border-bottom: 1px solid grey;
+    padding: 10px;
+    overflow-y: auto;
+}

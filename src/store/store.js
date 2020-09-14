@@ -1,4 +1,4 @@
-import {chatReducer, msgReducer} from './reducers'
+import {chatReducer} from './reducers'
 
 
 export const initialState = {
@@ -6,18 +6,15 @@ export const initialState = {
         chatsList: [],
         selectedChat: null,
         selectedUser: null,
-        msgId: null
-    },
-    // msgState: {
-    //     msgId: null
-    // }
+        msgId: null,
+        msgToEdit: null
+    }
 
 };
 
 export function reducers(state = initialState, action) {
     return {
-        chatState: chatReducer(state.chatState, action),
-        // msgState: msgReducer(state.msgState, action)
+        chatState: chatReducer(state.chatState, action)
     }
 }
 

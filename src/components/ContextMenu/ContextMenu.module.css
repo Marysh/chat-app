@@ -1,0 +1,27 @@
+.msg_ContextMenu {
+    position: absolute;
+    width: 100px;
+    color: #fff;
+    z-index: 10;
+    background-color: #28364c;
+    border-radius: 0 5px 5px;
+    padding: 10px 0;
+}
+
+.msg_ContextMenu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.msg_ContextMenu ul li {
+    padding: 5px 10px;
+}
+
+.msg_ContextMenu ul li:hover {
+    background-color: rgba(53, 71, 101, 0.8);
+}
+
+.msg_ContextMenu ul li:not(:last-child) {
+    margin-bottom: 5px;
+}

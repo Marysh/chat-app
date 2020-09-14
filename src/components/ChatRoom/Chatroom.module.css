@@ -1,0 +1,41 @@
+.chatRoom {
+    border-bottom: 1px solid grey;
+    padding: 10px 15px;
+    min-height: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.chatRoomName {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatRoomName div:first-of-type {
+    font-weight: 700;
+}
+
+.chatRoomBtn {
+    background: none;
+    padding-right: 0;
+}
+
+.chatRoomBtn:focus {
+    outline: none;
+}
+
+.whiteBg {
+    background-color: #ffffff;
+}
+
+.transparent {
+    background-color: transparent;
+}
+
+.preview_msg {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

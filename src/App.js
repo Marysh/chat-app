@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import Messenger from "./components/Messenger";
-import UsersToSelect from "./components/UsersToSelect";
+import Messenger from "./components/Messenger/Messenger";
+import UsersToSelect from "./components/UsersToSelect/UsersToSelect";
 import {connect} from "react-redux";
 
 class App extends React.Component {

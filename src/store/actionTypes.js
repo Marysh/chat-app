@@ -10,11 +10,6 @@ export const chatActionTypes = {
     DELETE_MSG: 'DELETE_MSG',
 };
 
-export const messageActionTypes = {
-    DELETE_MSG: 'DELETE_MSG',
-    EDIT_MSG: 'EDIT_MSG',
-}
-
 export function createChat(newChat) {
     return {type: chatActionTypes.CREATE_CHAT, newChat}
 }
@@ -51,12 +46,3 @@ export function deleteMsg(msgId) {
 export function editMsg(msgId) {
     return {type: chatActionTypes.EDIT_MSG, msgId}
 }
-
-// export function deleteMsg(msgId) {
-//     return {type: messageActionTypes.DELETE_MSG, msgId}
-// }
-//
-//
-// export function editMsg(msgId) {
-//     return {type: messageActionTypes.EDIT_MSG, msgId}
-// }

@@ -1,0 +1,13 @@
+.user_wrap {
+    border: 1px solid black;
+    padding: 5px 10px;
+}
+
+.user_wrap:not(:last-child) {
+    border-bottom: none;
+}
+
+.user_wrap:hover {
+    background-color: #cccccc;
+    cursor: pointer;
+}

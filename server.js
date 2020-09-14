@@ -52,7 +52,6 @@ io.on('connection', (socket) => {
 
 
     socket.on('disconnect', () => {
-        // todo leave
         console.log('disconnection')
     });
 

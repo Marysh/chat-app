@@ -1,5 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
+import styles from "./Modal.module.css"
 
 const modalRoot = document.getElementById('modal');
 
@@ -7,7 +8,7 @@ class Modal extends React.Component {
 	constructor( props ) {
 		super(props);
 		this.element = document.createElement('div');
-		this.element.className = 'my-modal'
+		this.element.className = styles.my_modal;
 	};
 
 
