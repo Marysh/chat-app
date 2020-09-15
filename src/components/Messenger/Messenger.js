@@ -14,12 +14,12 @@ import styles from "./Messenger.module.css"
 class Messenger extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.getUserRooms(this.props.user);
+        this.getUserRooms(this.props.userId);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.user !== this.props.user) {
-            this.getUserRooms(this.props.user);
+        if (prevProps.userId !== this.props.userId) {
+            this.getUserRooms(this.props.userId);
         }
 
         const {selectedChat} = this.props.chatState;
@@ -61,11 +61,11 @@ class Messenger extends React.PureComponent {
     };
 
     render() {
-        const {user, chatState} = this.props;
+        const {userId, chatState} = this.props;
         return (
             <div className={styles.messengerWrapper}>
                 <div className={styles.leftBar_wrap}>
-                    <AddChat ownerId={user}/>
+                    <AddChat ownerId={userId}/>
                     <ChatList/>
                 </div>
 

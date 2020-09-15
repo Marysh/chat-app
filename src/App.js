@@ -11,8 +11,7 @@ class App extends React.Component {
         return (
             <div style={{margin: "100px auto 0", width: "600px"}}>
                 <UsersToSelect/>
-                {/*tdo rename user to userId*/}
-                {chatState.selectedUser && <Messenger user={chatState.selectedUser.id}/>}
+                {chatState.selectedUser && <Messenger userId={chatState.selectedUser.id}/>}
             </div>
         )
     };
