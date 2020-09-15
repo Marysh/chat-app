@@ -1,13 +1,13 @@
 # Getting Started
 
-~~ `npm i` ~~
+`npm i` 
 
 Installs the dependencies listed in package.json in the local node_modules folder. 
 Before this you have to install Node.js on your system.
 
 In the project directory run:
 
-~~ `npm start`~~
+`npm start`
 
 This command runs the app in the development mode.<br />
 App will run on [http://localhost:3000].
